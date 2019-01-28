@@ -1,0 +1,26 @@
+@import 'src/styles/variables.scss';
+
+.root {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.workspace{
+    overflow: auto;
+    flex-grow: 1;
+    background-color: $gray3;
+    padding: 10px;
+}
+
+.header {
+    flex-grow: 0;
+    flex-shrink: 0;
+    background-color: $gray5;
+    border-bottom: 1px solid $gray1;
+    padding: 10px;
+}
+
+.widgetsArea {
+    position: relative;
+}

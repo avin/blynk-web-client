@@ -1,5 +1,5 @@
 import * as Immutable from 'immutable';
-import { SET_CONNECTION_PARAMS, SET_PROJECT } from './actionTypes';
+import { SET_CONNECTION_PARAMS, SET_PROJECT, SET_PIN_VALUE } from './actionTypes';
 
 const defaultToken = localStorage.getItem('blynk-web-client:token');
 const defaultServerHost = localStorage.getItem('blynk-web-client:serverHost') || 'blynk-cloud.com';
@@ -11,6 +11,7 @@ const initialState = Immutable.fromJS({
     serverPort: defaultPort,
 
     project: null,
+    pins: {},
 });
 
 export default function reducer(state = initialState, action = {}) {
@@ -25,6 +26,10 @@ export default function reducer(state = initialState, action = {}) {
         case SET_PROJECT: {
             const { project } = action;
             return state.set('project', project);
+        }
+        case SET_PIN_VALUE: {
+            const { pin, value } = action;
+            return state.setIn(['pins', pin], value);
         }
         default:
             return state;

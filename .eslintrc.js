@@ -3,7 +3,6 @@ module.exports = {
     extends: [
         'airbnb-base',
         'react-app',
-        'plugin:sonarjs/recommended',
         'plugin:import/errors',
         'prettier',
         'plugin:react/recommended',
@@ -11,7 +10,7 @@ module.exports = {
     env: {
         jest: true,
     },
-    plugins: ['import', 'sonarjs', 'react'],
+    plugins: ['import', 'react'],
     rules: {
         indent: ['error', 4, { SwitchCase: 1 }],
         'max-len': ['error', 120],
@@ -44,8 +43,6 @@ module.exports = {
             'error',
             { devDependencies: ['**/*.test.js', '**/*.spec.js', '**/test/*.js', '**/__tests__/*.js'] },
         ],
-        'sonarjs/no-duplicate-string': 'off',
-        'sonarjs/no-small-switch': 'off',
         'no-param-reassign': 'off',
         'class-methods-use-this': 'off',
         'no-shadow': 'off',

@@ -1,10 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import 'blynk-library/blynk-browser';
+import { FocusStyleManager } from '@blueprintjs/core';
 import configureStore from './redux/store';
 import Root from './components/Root/Root';
 import './styles/index.scss';
 import * as serviceWorker from './serviceWorker';
-import 'blynk-library/blynk-browser';
+
+FocusStyleManager.onlyShowFocusOnTabs();
 
 // Init redux-store
 const store = configureStore();

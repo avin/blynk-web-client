@@ -2,6 +2,13 @@
 # yarn lockfile v1
 
 
+"@avinlab/repeat@^1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@avinlab/repeat/-/repeat-1.0.1.tgz#ce0f8cf2671d62dc46a744bc6aafb5e21196d005"
+  integrity sha512-sfce6D5FlP3b+mM6NrSP1KKDgmK74hTn7eOmLSal49uIxzO0LgbZrjCW/Os6mc3XdB1BUj4l4qSFgjBO0FgliQ==
+  dependencies:
+    "@babel/runtime" "^7.0.0"
+
 "@babel/code-frame@7.0.0", "@babel/code-frame@^7.0.0", "@babel/code-frame@^7.0.0-beta.35":
   version "7.0.0"
   resolved "https://registry.yarnpkg.com/@babel/code-frame/-/code-frame-7.0.0.tgz#06e2ab19bdb535385559aabb5ba59729482800f8"
@@ -825,7 +832,7 @@
   dependencies:
     regenerator-runtime "^0.12.0"
 
-"@babel/runtime@^7.1.2", "@babel/runtime@^7.1.5", "@babel/runtime@^7.2.0":
+"@babel/runtime@^7.0.0", "@babel/runtime@^7.1.2", "@babel/runtime@^7.1.5", "@babel/runtime@^7.2.0":
   version "7.3.1"
   resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.3.1.tgz#574b03e8e8a9898eaf4a872a92ea20b7846f6f2a"
   integrity sha512-7jGW8ppV0ant637pIqAcFfQDDH1orEPGJb8aXfUozuCU3QqX7rX4DA8iwrbPrR1hcH0FTTHz47yQnk+bl5xHQA==
@@ -2327,6 +2334,11 @@ chownr@^1.0.1, chownr@^1.1.1:
   resolved "https://registry.yarnpkg.com/chownr/-/chownr-1.1.1.tgz#54726b8b8fff4df053c42187e801fb4412df1494"
   integrity sha512-j38EvO5+LHX84jlo6h4UzmOwi0UgW61WRyPtJz4qaadK5eY3BTS5TY/S1Stc3Uk2lIM6TPevAlULiEJwie860g==
 
+chroma-js@^2.0.2:
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/chroma-js/-/chroma-js-2.0.2.tgz#507bfe0e22da9c30673ffc4532c8ca6b4f2926db"
+  integrity sha512-VtDXaYcaDr45wheOXasIs4S4IWEjpqh74UfQA0TwoLuBR7TG12ztmjj9JqTIe1sgzVTMDNwSPEJYcw/jYK2TSw==
+
 chrome-trace-event@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/chrome-trace-event/-/chrome-trace-event-1.0.0.tgz#45a91bd2c20c9411f0963b5aaeb9a1b95e09cc48"
@@ -3644,11 +3656,6 @@ eslint-plugin-react@7.11.1:
     has "^1.0.3"
     jsx-ast-utils "^2.0.1"
     prop-types "^15.6.2"
-
-eslint-plugin-sonarjs@^0.2.0:
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/eslint-plugin-sonarjs/-/eslint-plugin-sonarjs-0.2.0.tgz#e78d6f8c533e941d97fdcbf2862811b5a4565892"
-  integrity sha512-sTG7XYJ82OL9mcCNctjYkpivBPMT/4KNwReIRVdbPjc5A8YyVOqcWCgFpJ1TAMoKBpoA8iC7m4taIl83hdsgyA==
 
 eslint-restricted-globals@^0.1.1:
   version "0.1.1"
@@ -9411,6 +9418,11 @@ requires-port@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/requires-port/-/requires-port-1.0.0.tgz#925d2601d39ac485e091cf0da5c6e694dc3dcaff"
   integrity sha1-kl0mAdOaxIXgkc8NpcbmlNw9yv8=
+
+reselect@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/reselect/-/reselect-4.0.0.tgz#f2529830e5d3d0e021408b246a206ef4ea4437f7"
+  integrity sha512-qUgANli03jjAyGlnbYVAV5vvnOmJnODyABz51RdBN7M4WaVu8mecZWgyQNkG8Yqe3KRGRt0l4K4B3XVEULC4CA==
 
 reserved-words@^0.1.2:
   version "0.1.2"

@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import cn from 'clsx';
 import { getProject, setPinValue } from '../../../redux/modules/blynk/actions';
 import styles from './styles.module.scss';
 import Widget from './Widget/Widget';
@@ -64,8 +65,10 @@ export class ProjectPage extends React.Component {
             return <div />;
         }
 
+        const isDarkTheme = project.get('theme') === 'Blynk';
+
         return (
-            <div className={styles.root}>
+            <div className={cn(styles.root, { 'bp3-dark': isDarkTheme })}>
                 <div className={styles.header}>
                     <div className={styles.headerTitle}>{project.get('name')}</div>
                 </div>

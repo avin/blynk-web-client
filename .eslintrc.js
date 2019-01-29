@@ -14,7 +14,7 @@ module.exports = {
     rules: {
         indent: ['error', 4, { SwitchCase: 1 }],
         'max-len': ['error', 120],
-
+        'no-bitwise': 'off',
         'no-console': ['error', { allow: ['warn', 'error', 'info'] }],
         'no-mixed-operators': 'off',
         'no-await-in-loop': 'off',

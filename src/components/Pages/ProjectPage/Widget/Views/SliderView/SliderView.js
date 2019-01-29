@@ -1,9 +1,10 @@
 import React from 'react';
 import { Slider } from '@blueprintjs/core';
-import blynkWSClient from '../../../../../common/blynkWSClient';
-import { getWidgetPinAddress } from '../../../../../utils/data';
+import blynkWSClient from '../../../../../../common/blynkWSClient';
+import { getWidgetPinAddress } from '../../../../../../utils/data';
+import WidgetLabel from '../../WidgetLabel/WidgetLabel';
 
-export default class WidgetSlider extends React.Component {
+export default class SliderView extends React.Component {
     handleChangeValue = value => {
         const { widget } = this.props;
 
@@ -14,8 +15,10 @@ export default class WidgetSlider extends React.Component {
 
     render() {
         const { widget, value } = this.props;
+
         return (
             <div>
+                <WidgetLabel title={widget.get('label') || 'Slider'} information={value} />
                 <Slider
                     value={Number(value)}
                     labelRenderer={false}

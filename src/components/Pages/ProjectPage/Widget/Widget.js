@@ -1,66 +1,67 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import styles from './styles.module.scss';
-import WidgetButton from './WidgetButton/WidgetButton';
-import WidgetSlider from './WidgetSlider/WidgetSlider';
-import WidgetNumericalDisplay from './WidgetNumericalDisplay/WidgetNumericalDisplay';
-import WidgetUnknown from './WidgetUnknown/WidgetUnknown';
-import WidgetEnhancedGraph from './WidgetEnhancedGraph/WidgetEnhancedGraph';
+import ButtonView from './Views/ButtonView/ButtonView';
+import SliderView from './Views/SliderView/SliderView';
+import NumericalDisplayView from './Views/NumericalDisplayView/NumericalDisplayView';
+import UnknownView from './Views/UnknownView/UnknownView';
+import EnhancedGraphView from './Views/EnhancedGraphView/EnhancedGraphView';
+import RgbView from './Views/RgbView/RgbView';
 import { widgetValueSelector } from '../../../../redux/selectors';
 
-const WIDGET_COMPONENTS = {
-    BUTTON: WidgetButton,
-    SLIDER: WidgetSlider,
-    VERTICAL_SLIDER: WidgetUnknown,
-    KNOB: WidgetUnknown,
-    TIMER: WidgetUnknown,
-    ROTARY_KNOB: WidgetUnknown,
-    RGB: WidgetUnknown,
-    TWO_WAY_ARROW: WidgetUnknown,
-    FOUR_WAY_ARROW: WidgetUnknown,
-    ONE_AXIS_JOYSTICK: WidgetUnknown,
-    TWO_AXIS_JOYSTICK: WidgetUnknown,
-    GAMEPAD: WidgetUnknown,
-    KEYPAD: WidgetUnknown,
+const WIDGET_VIEW_COMPONENTS = {
+    BUTTON: ButtonView,
+    SLIDER: SliderView,
+    VERTICAL_SLIDER: UnknownView,
+    KNOB: UnknownView,
+    TIMER: UnknownView,
+    ROTARY_KNOB: UnknownView,
+    RGB: RgbView,
+    TWO_WAY_ARROW: UnknownView,
+    FOUR_WAY_ARROW: UnknownView,
+    ONE_AXIS_JOYSTICK: UnknownView,
+    TWO_AXIS_JOYSTICK: UnknownView,
+    GAMEPAD: UnknownView,
+    KEYPAD: UnknownView,
 
     // outputs
-    LED: WidgetUnknown,
-    LOGGER: WidgetUnknown,
-    ENHANCED_GRAPH: WidgetEnhancedGraph,
-    DIGIT4_DISPLAY: WidgetNumericalDisplay,
-    GAUGE: WidgetUnknown,
-    LCD_DISPLAY: WidgetUnknown,
-    GRAPH: WidgetUnknown,
-    LEVEL_DISPLAY: WidgetUnknown,
-    TERMINAL: WidgetUnknown,
+    LED: UnknownView,
+    LOGGER: UnknownView,
+    ENHANCED_GRAPH: EnhancedGraphView,
+    DIGIT4_DISPLAY: NumericalDisplayView,
+    GAUGE: UnknownView,
+    LCD_DISPLAY: UnknownView,
+    GRAPH: UnknownView,
+    LEVEL_DISPLAY: UnknownView,
+    TERMINAL: UnknownView,
 
     // inputs
-    MICROPHONE: WidgetUnknown,
-    GYROSCOPE: WidgetUnknown,
-    ACCELEROMETER: WidgetUnknown,
-    GPS: WidgetUnknown,
+    MICROPHONE: UnknownView,
+    GYROSCOPE: UnknownView,
+    ACCELEROMETER: UnknownView,
+    GPS: UnknownView,
 
     // notifications
-    TWITTER: WidgetUnknown,
-    EMAIL: WidgetUnknown,
-    NOTIFICATION: WidgetUnknown,
+    TWITTER: UnknownView,
+    EMAIL: UnknownView,
+    NOTIFICATION: UnknownView,
 
     // other
-    SD_CARD: WidgetUnknown,
-    EVENTOR: WidgetUnknown,
-    RCT: WidgetUnknown,
-    BRIDGE: WidgetUnknown,
-    BLUETOOTH: WidgetUnknown,
+    SD_CARD: UnknownView,
+    EVENTOR: UnknownView,
+    RCT: UnknownView,
+    BRIDGE: UnknownView,
+    BLUETOOTH: UnknownView,
 
     // UI
-    MENU: WidgetUnknown,
+    MENU: UnknownView,
 };
 
 export class Widget extends React.Component {
     renderContent() {
         const { widget, value } = this.props;
-        const WidgetComponent = WIDGET_COMPONENTS[widget.get('type')] || WidgetUnknown;
-        return <WidgetComponent widget={widget} value={value} />;
+        const ViewComponent = WIDGET_VIEW_COMPONENTS[widget.get('type')] || UnknownView;
+        return <ViewComponent widget={widget} value={value} />;
     }
 
     render() {

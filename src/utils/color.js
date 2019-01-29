@@ -1,6 +1,8 @@
-/* eslint-disable no-bitwise */
 export function numToCssColor(num) {
     const color = parseColor(num);
+    if (color[0] === 0 && color[1] === 0 && color[2] === 0) {
+        return undefined;
+    }
     return `rgba(${color.join(', ')})`;
 }
 

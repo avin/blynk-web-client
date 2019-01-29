@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default class WidgetEnhancedGraph extends React.Component {
+export default class EnhancedGraphView extends React.Component {
     render() {
         // const {widget} = this.props;
 

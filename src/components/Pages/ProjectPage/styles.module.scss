@@ -9,9 +9,12 @@
 .workspace{
     overflow: auto;
     flex-grow: 1;
-    background-color: $dark-gray1;
     padding: 10px;
     color: $gray3;
+}
+
+:global(.bp3-dark) .workspace{
+    background-color: $dark-gray1;
 }
 
 .header {
@@ -20,6 +23,11 @@
     background-color: $gray5;
     border-bottom: 1px solid $gray1;
     padding: 10px;
+}
+
+:global(.bp3-dark) .header{
+    background-color: $dark-gray5;
+    border-bottom: 1px solid $dark-gray3;
 }
 
 .headerTitle{

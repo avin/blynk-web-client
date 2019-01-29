@@ -1,0 +1,17 @@
+@import 'src/styles/variables.scss';
+
+.root {
+    width: 100%;
+    display: flex;
+    margin-bottom: 8px;
+    justify-content: space-between;
+}
+
+.title{
+
+}
+
+.information{
+    font-size: 12px;
+    text-align: right;
+}

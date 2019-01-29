@@ -7,12 +7,17 @@ export const widgetValueSelector = createSelector(
     widgetByIdSelector,
     state => state.blynk.get('pins'),
     (widget, pins) => {
-        if (widget.get('pinType') && widget.get('pin') > -1) {
+        if (widget.get('pin') === -1) {
+            return widget.get('value');
+        }
+
+        if (widget.get('pinType')) {
             const pin = getWidgetPinAddress(widget);
             const pinValue = pins.get(pin);
 
             return pinValue !== undefined ? pinValue : widget.get('value');
         }
-        return 'SHIT_PIN';
+
+        return '???';
     },
 );

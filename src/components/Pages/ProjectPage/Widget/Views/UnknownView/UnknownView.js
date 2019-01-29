@@ -1,11 +1,11 @@
 import React from 'react';
 
-export default class WidgetUnknown extends React.Component {
+export default class UnknownView extends React.Component {
     render() {
         const { widget } = this.props;
         return (
             <div>
-                <b>UNKNOWN!</b> {widget.type}
+                <b>UNKNOWN!</b> {widget.get('type')}
             </div>
         );
     }

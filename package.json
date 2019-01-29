@@ -3,11 +3,13 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@avinlab/react-size-me": "^1.1.5",
     "@avinlab/repeat": "^1.0.1",
     "@blueprintjs/core": "^3.12.0",
     "blynk-library": "^0.5.3",
     "chroma-js": "^2.0.2",
     "clsx": "^1.0.1",
+    "coloreact": "^0.2.4",
     "final-form": "^4.11.0",
     "immutable": "^4.0.0-rc.12",
     "lodash": "^4.17.11",

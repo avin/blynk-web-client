@@ -8,6 +8,7 @@ import UnknownView from './Views/UnknownView/UnknownView';
 import EnhancedGraphView from './Views/EnhancedGraphView/EnhancedGraphView';
 import RgbView from './Views/RgbView/RgbView';
 import TwoAxisJoystickView from './Views/TwoAxisJoystickView/TwoAxisJoystickView';
+import TerminalView from './Views/TerminalView/TerminalView';
 
 const WIDGET_VIEW_COMPONENTS = {
     BUTTON: ButtonView,
@@ -33,7 +34,7 @@ const WIDGET_VIEW_COMPONENTS = {
     LCD_DISPLAY: UnknownView,
     GRAPH: UnknownView,
     LEVEL_DISPLAY: UnknownView,
-    TERMINAL: UnknownView,
+    TERMINAL: TerminalView,
 
     // inputs
     MICROPHONE: UnknownView,

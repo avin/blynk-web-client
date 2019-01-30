@@ -1,0 +1,16 @@
+.outputContainer{
+    flex-grow: 1;
+    display: flex;
+}
+.output{
+    flex-grow: 1;
+    min-height: 100%;
+    margin-top: 0px !important;
+    margin-bottom: 5px !important;
+    padding: 5px 10px !important;
+    overflow: auto;
+}
+
+.input{
+
+}

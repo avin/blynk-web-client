@@ -5,6 +5,7 @@ import blynkWSClient from '../../../../../../common/blynkWSClient';
 import { getWidgetPinAddress } from '../../../../../../utils/data';
 import WidgetLabel from '../../WidgetLabel/WidgetLabel';
 import { pinValueSelector } from '../../../../../../redux/selectors';
+import styles from './styles.module.scss';
 
 export class SliderView extends React.Component {
     handleChangeValue = value => {
@@ -19,16 +20,18 @@ export class SliderView extends React.Component {
         const { widget, value } = this.props;
 
         return (
-            <div>
+            <>
                 <WidgetLabel title={widget.get('label') || 'Slider'} information={value} />
-                <Slider
-                    value={Number(value)}
-                    labelRenderer={false}
-                    min={widget.get('min')}
-                    max={widget.get('max')}
-                    onChange={this.handleChangeValue}
-                />
-            </div>
+                <div className={styles.sliderContainer}>
+                    <Slider
+                        value={Number(value)}
+                        labelRenderer={false}
+                        min={widget.get('min')}
+                        max={widget.get('max')}
+                        onChange={this.handleChangeValue}
+                    />
+                </div>
+            </>
         );
     }
 }

@@ -1,0 +1,12 @@
+.loading {
+    flex-grow: 1;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    opacity: 0.5;
+}
+
+.chart{
+    flex-grow: 1;
+    display: flex;
+}

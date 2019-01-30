@@ -1,6 +1,8 @@
 import request from 'superagent';
 import * as Immutable from 'immutable';
-import { SET_CONNECTION_PARAMS, SET_PIN_VALUE, SET_PROJECT } from './actionTypes';
+import pako from 'pako';
+import * as d3 from 'd3';
+import { SET_CONNECTION_PARAMS, SET_PIN_VALUE, SET_PROJECT, SET_PIN_HISTORY } from './actionTypes';
 import { listToMap } from '../../../utils/immutable';
 
 /**
@@ -70,5 +72,27 @@ export function setPinValue(pin, value) {
         type: SET_PIN_VALUE,
         pin,
         value,
+    };
+}
+
+export function getPinHistory(pin) {
+    return async (dispatch, getState) => {
+        const { token, serverHost, serverPort } = getState().blynk.toObject();
+
+        const res = await request
+            .get(`http://${serverHost}:${serverPort}/${token}/data/${pin.toUpperCase()}`)
+            .responseType('blob');
+
+        const reader = new FileReader();
+        reader.onload = function(event) {
+            const csv = pako.ungzip(reader.result, { to: 'string' });
+            const history = d3.csvParseRows(csv).map(item => [Number(item[1]), Number(item[0])]);
+            dispatch({
+                type: SET_PIN_HISTORY,
+                pin,
+                history,
+            });
+        };
+        reader.readAsArrayBuffer(res.body);
     };
 }

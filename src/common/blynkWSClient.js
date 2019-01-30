@@ -1,4 +1,5 @@
 import repeat from '@avinlab/repeat';
+import throttle from 'lodash/throttle';
 
 const MsgType = {
     RESPONSE: 0,
@@ -190,10 +191,16 @@ class BlynkWSClient extends EventTarget {
         const pinType = pin[0];
         const pinNumber = pin.slice(1);
 
-        this.send(`hardware ${pinType}w ${pinNumber} ${value}`);
+        this.throttleSend(pin)(`hardware ${pinType}w ${pinNumber} ${value}`);
 
         this.dispatchWritePin(pin, value);
     }
+
+    _throttleSendFunctions = {};
+    throttleSend = pin => {
+        this._throttleSendFunctions[pin] = this._throttleSendFunctions[pin] || throttle(this.send.bind(this), 100);
+        return this._throttleSendFunctions[pin];
+    };
 
     handleHardwareMessage(data) {
         const [type, pin, value] = data.split(String.fromCharCode(0));

@@ -1,5 +1,5 @@
 import * as Immutable from 'immutable';
-import { SET_CONNECTION_PARAMS, SET_PROJECT, SET_PIN_VALUE } from './actionTypes';
+import { SET_CONNECTION_PARAMS, SET_PROJECT, SET_PIN_VALUE, SET_PIN_HISTORY } from './actionTypes';
 import { getWidgetPinAddress } from '../../../utils/data';
 
 const defaultToken = localStorage.getItem('blynk-web-client:token');
@@ -13,6 +13,7 @@ const initialState = Immutable.fromJS({
 
     project: null,
     pins: {},
+    pinsHistory: {},
 });
 
 export default function reducer(state = initialState, action = {}) {
@@ -52,6 +53,14 @@ export default function reducer(state = initialState, action = {}) {
                     widget = widget.set('pins', widgetPins);
                 }
 
+                let widgetDataStreams = widget.get('dataStreams');
+                if (widgetDataStreams) {
+                    widgetDataStreams = widgetDataStreams.map(widgetDataStream => {
+                        return widgetDataStream.set('pin', processWidgetPin(widgetDataStream.get('pin')));
+                    });
+                    widget = widget.set('dataStreams', widgetDataStreams);
+                }
+
                 return widget;
             });
 
@@ -62,6 +71,10 @@ export default function reducer(state = initialState, action = {}) {
         case SET_PIN_VALUE: {
             const { pin, value } = action;
             return state.setIn(['pins', pin], value);
+        }
+        case SET_PIN_HISTORY: {
+            const { pin, history } = action;
+            return state.setIn(['pinsHistory', pin], history);
         }
         default:
             return state;

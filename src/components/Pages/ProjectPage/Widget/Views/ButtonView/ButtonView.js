@@ -1,12 +1,14 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { Button } from '@blueprintjs/core';
 import SizeMe from '@avinlab/react-size-me';
 import WidgetLabel from '../../WidgetLabel/WidgetLabel';
 import styles from './styles.module.scss';
 import { getWidgetPinAddress } from '../../../../../../utils/data';
 import blynkWSClient from '../../../../../../common/blynkWSClient';
+import { pinValueSelector } from '../../../../../../redux/selectors';
 
-export default class ButtonView extends React.Component {
+export class ButtonView extends React.Component {
     renderButtonLabel() {
         const { widget, value } = this.props;
 
@@ -65,3 +67,15 @@ export default class ButtonView extends React.Component {
         );
     }
 }
+
+function mapStateToProps(state, ownProps) {
+    const pinId = ownProps.widget.get('pinId');
+    return {
+        value: pinValueSelector(state, pinId),
+    };
+}
+
+export default connect(
+    mapStateToProps,
+    {},
+)(ButtonView);

@@ -1,8 +1,10 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import styles from './styles.module.scss';
 import { numToCssColor } from '../../../../../../utils/color';
+import { pinValueSelector } from '../../../../../../redux/selectors';
 
-export default class NumericalDisplayView extends React.Component {
+export class NumericalDisplayView extends React.Component {
     renderValue() {
         const { value } = this.props;
 
@@ -36,3 +38,15 @@ export default class NumericalDisplayView extends React.Component {
         );
     }
 }
+
+function mapStateToProps(state, ownProps) {
+    const pinId = ownProps.widget.get('pinId');
+    return {
+        value: pinValueSelector(state, pinId),
+    };
+}
+
+export default connect(
+    mapStateToProps,
+    {},
+)(NumericalDisplayView);

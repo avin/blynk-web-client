@@ -1,10 +1,12 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { Slider } from '@blueprintjs/core';
 import blynkWSClient from '../../../../../../common/blynkWSClient';
 import { getWidgetPinAddress } from '../../../../../../utils/data';
 import WidgetLabel from '../../WidgetLabel/WidgetLabel';
+import { pinValueSelector } from '../../../../../../redux/selectors';
 
-export default class SliderView extends React.Component {
+export class SliderView extends React.Component {
     handleChangeValue = value => {
         const { widget } = this.props;
 
@@ -30,3 +32,15 @@ export default class SliderView extends React.Component {
         );
     }
 }
+
+function mapStateToProps(state, ownProps) {
+    const pinId = ownProps.widget.get('pinId');
+    return {
+        value: pinValueSelector(state, pinId),
+    };
+}
+
+export default connect(
+    mapStateToProps,
+    {},
+)(SliderView);

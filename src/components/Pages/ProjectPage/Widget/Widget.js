@@ -7,7 +7,7 @@ import NumericalDisplayView from './Views/NumericalDisplayView/NumericalDisplayV
 import UnknownView from './Views/UnknownView/UnknownView';
 import EnhancedGraphView from './Views/EnhancedGraphView/EnhancedGraphView';
 import RgbView from './Views/RgbView/RgbView';
-import { widgetValueSelector } from '../../../../redux/selectors';
+import TwoAxisJoystickView from './Views/TwoAxisJoystickView/TwoAxisJoystickView';
 
 const WIDGET_VIEW_COMPONENTS = {
     BUTTON: ButtonView,
@@ -20,7 +20,7 @@ const WIDGET_VIEW_COMPONENTS = {
     TWO_WAY_ARROW: UnknownView,
     FOUR_WAY_ARROW: UnknownView,
     ONE_AXIS_JOYSTICK: UnknownView,
-    TWO_AXIS_JOYSTICK: UnknownView,
+    TWO_AXIS_JOYSTICK: TwoAxisJoystickView,
     GAMEPAD: UnknownView,
     KEYPAD: UnknownView,
 
@@ -59,9 +59,9 @@ const WIDGET_VIEW_COMPONENTS = {
 
 export class Widget extends React.Component {
     renderContent() {
-        const { widget, value } = this.props;
+        const { widget } = this.props;
         const ViewComponent = WIDGET_VIEW_COMPONENTS[widget.get('type')] || UnknownView;
-        return <ViewComponent widget={widget} value={value} />;
+        return <ViewComponent widget={widget} />;
     }
 
     render() {
@@ -88,11 +88,7 @@ export class Widget extends React.Component {
 }
 
 function mapStateToProps(state, ownProps) {
-    const widgetId = ownProps.widget.get('id');
-
-    return {
-        value: widgetValueSelector(state, widgetId),
-    };
+    return {};
 }
 
 export default connect(

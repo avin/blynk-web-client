@@ -1,0 +1,24 @@
+@import 'src/styles/variables.scss';
+
+.stickContainer {
+    position: relative;
+    background-color: $dark-gray1;
+    border-radius: 50%;
+
+    box-shadow: 0 0 0 5px $dark-gray5;
+}
+
+.sizeContainer {
+    display: flex;
+    justify-content: center;
+}
+
+.mainContainer {
+    flex-grow: 1;
+}
+
+.stick {
+    position: absolute;
+    border-radius: 50% !important;
+    background-color: #f2b824;
+}

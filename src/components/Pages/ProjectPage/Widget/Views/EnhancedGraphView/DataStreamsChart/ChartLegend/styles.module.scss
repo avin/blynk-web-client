@@ -1,0 +1,17 @@
+.legend{
+    display: flex;
+    font-size: 12px;
+    line-height: 20px;
+}
+
+.legendItem {
+    margin-right: 10px;
+}
+
+.legendCell {
+    width: 10px;
+    height: 10px;
+    display: inline-block;
+    margin-right: 3px;
+    border-radius: 2px;
+}

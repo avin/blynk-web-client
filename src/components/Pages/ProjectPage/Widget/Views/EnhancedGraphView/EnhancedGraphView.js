@@ -6,6 +6,7 @@ import { getPinHistory } from '../../../../../../redux/modules/blynk/actions';
 import { widgetDataStreamsHistorySelector } from '../../../../../../redux/selectors';
 import styles from './styles.module.scss';
 import DataStreamsChart from './DataStreamsChart/DataStreamsChart';
+import WidgetLabel from '../../WidgetLabel/WidgetLabel';
 
 export class EnhancedGraphView extends React.Component {
     state = {
@@ -35,14 +36,18 @@ export class EnhancedGraphView extends React.Component {
         return (
             <div className={styles.chart}>
                 <SizeMe>
-                    {({ width, height }) => (
-                        <DataStreamsChart
-                            dataStreams={widget.get('dataStreams')}
-                            dataStreamsHistory={dataStreamsHistory}
-                            width={width}
-                            height={height}
-                        />
-                    )}
+                    {({ width, height }) =>
+                        !!height && (
+                            <DataStreamsChart
+                                dataStreams={widget.get('dataStreams')}
+                                dataStreamsHistory={dataStreamsHistory}
+                                controlBlockRef={this.controlBlockRef}
+                                legendBlockRef={this.legendBlockRef}
+                                width={width}
+                                height={height}
+                            />
+                        )
+                    }
                 </SizeMe>
             </div>
         );
@@ -58,10 +63,30 @@ export class EnhancedGraphView extends React.Component {
 
     render() {
         const { historyIsReady } = this.state;
+        const { widget } = this.props;
 
         return (
             <>
-                <b>WidgetEnhancedGraph</b>
+                <WidgetLabel
+                    title={
+                        <div className={styles.widgetLabelContainer}>
+                            <span className={styles.widgetLabel}>{widget.get('label')}</span>
+                            <div
+                                ref={i => {
+                                    this.legendBlockRef = i;
+                                }}
+                            />
+                        </div>
+                    }
+                    information={
+                        <div
+                            ref={i => {
+                                this.controlBlockRef = i;
+                            }}
+                        />
+                    }
+                    emptyHide={false}
+                />
                 {historyIsReady ? this.renderChart() : this.renderLoading()}
             </>
         );

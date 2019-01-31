@@ -2,6 +2,37 @@
 
 .chartContainer {
     flex-grow: 1;
-    background-color: $indigo1;
+    //background-color: $indigo1;
+}
 
+.svg {
+    pointer-events: all;
+}
+
+.chartLine {
+    fill: none;
+    stroke-width: 2;
+}
+
+.leftAxis {
+    :global {
+        text {
+            paint-order: stroke;
+            stroke: #000000;
+            stroke-width: 1px;
+            stroke-linecap: butt;
+            stroke-linejoin: miter;
+            font-weight: 800;
+        }
+    }
+}
+
+.tipMouseLine {
+    stroke: $light-gray3;
+    stroke-width: 1px;
+}
+
+.tipCircle {
+    stroke-width: 2px;
+    fill: $dark-gray1;
 }

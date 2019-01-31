@@ -6,7 +6,15 @@
     opacity: 0.5;
 }
 
-.chart{
+.chart {
     flex-grow: 1;
     display: flex;
+}
+
+.widgetLabelContainer {
+    display: flex;
+}
+
+.widgetLabel {
+    margin-right: 10px;
 }

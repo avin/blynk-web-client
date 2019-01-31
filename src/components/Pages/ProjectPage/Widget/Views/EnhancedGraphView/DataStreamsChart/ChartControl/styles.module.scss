@@ -1,0 +1,8 @@
+.control {
+    :global {
+        .bp3-button.bp3-small,
+        .bp3-small .bp3-button {
+            min-height: 20px;
+        }
+    }
+}

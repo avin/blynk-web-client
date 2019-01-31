@@ -83,16 +83,21 @@ export function getPinHistory(pin) {
             .get(`http://${serverHost}:${serverPort}/${token}/data/${pin.toUpperCase()}`)
             .responseType('blob');
 
-        const reader = new FileReader();
-        reader.onload = function(event) {
-            const csv = pako.ungzip(reader.result, { to: 'string' });
-            const history = d3.csvParseRows(csv).map(item => [Number(item[1]), Number(item[0])]);
-            dispatch({
-                type: SET_PIN_HISTORY,
-                pin,
-                history,
+        const processData = data =>
+            new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = () => {
+                    const csv = pako.ungzip(reader.result, { to: 'string' });
+                    const history = d3.csvParseRows(csv).map(item => [Number(item[1]), Number(item[0])]);
+                    dispatch({
+                        type: SET_PIN_HISTORY,
+                        pin,
+                        history,
+                    });
+                    resolve();
+                };
+                reader.readAsArrayBuffer(data);
             });
-        };
-        reader.readAsArrayBuffer(res.body);
+        await processData(res.body);
     };
 }

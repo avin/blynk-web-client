@@ -1,11 +1,22 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import styles from './styles.module.scss';
 
 export default class WidgetLabel extends React.Component {
-    render() {
-        const { title, information } = this.props;
+    static propTypes = {
+        title: PropTypes.node,
+        information: PropTypes.node,
+        emptyHide: PropTypes.bool,
+    };
 
-        if (!title && !information) {
+    static defaultProps = {
+        emptyHide: true,
+    };
+
+    render() {
+        const { title, information, emptyHide } = this.props;
+
+        if (!title && !information && emptyHide) {
             return <div />;
         }
 

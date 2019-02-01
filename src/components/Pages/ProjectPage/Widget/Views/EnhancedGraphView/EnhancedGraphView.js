@@ -33,6 +33,8 @@ export class EnhancedGraphView extends React.Component {
     renderChart() {
         const { widget, dataStreamsHistory } = this.props;
 
+        const showXAxis = widget.get('xAxisValues');
+
         return (
             <div className={styles.chart}>
                 <SizeMe>
@@ -43,6 +45,7 @@ export class EnhancedGraphView extends React.Component {
                                 dataStreamsHistory={dataStreamsHistory}
                                 controlBlockRef={this.controlBlockRef}
                                 legendBlockRef={this.legendBlockRef}
+                                showXAxis={showXAxis}
                                 width={width}
                                 height={height}
                             />

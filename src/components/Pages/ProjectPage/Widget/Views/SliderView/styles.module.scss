@@ -1,3 +1,12 @@
 .sliderContainer{
     margin: 0 10px;
+    display: flex;
+    justify-content: center;
+
+    :global{
+        .bp3-slider.bp3-vertical{
+            width: 18px;
+            min-width: 18px;
+        }
+    }
 }

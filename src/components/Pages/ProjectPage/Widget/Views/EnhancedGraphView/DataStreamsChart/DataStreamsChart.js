@@ -2,19 +2,45 @@ import React from 'react';
 import * as d3 from 'd3';
 import cn from 'clsx';
 import ReactDOM from 'react-dom';
+import PropTypes from 'prop-types';
+import * as Immutable from 'immutable';
+import chroma from 'chroma-js';
 import styles from './styles.module.scss';
 import ChartControl from './ChartControl/ChartControl';
 import ChartLegend from './ChartLegend/ChartLegend';
 
 export default class DataStreamsChart extends React.Component {
+    static propTypes = {
+        showXAxis: PropTypes.bool,
+        width: PropTypes.number.isRequired,
+        height: PropTypes.number.isRequired,
+        controlBlockRef: PropTypes.instanceOf(Element),
+        legendBlockRef: PropTypes.instanceOf(Element),
+        dataStreams: PropTypes.oneOfType([PropTypes.instanceOf(Array), PropTypes.instanceOf(Immutable.Iterable)])
+            .isRequired,
+        dataStreamsHistory: PropTypes.oneOfType([PropTypes.instanceOf(Array), PropTypes.instanceOf(Immutable.Iterable)])
+            .isRequired,
+    };
+
     originalChartDuration = 3600 * 1000 * 6;
     chartDuration = this.originalChartDuration;
     lastChartTime = 0;
 
     drawChart() {
-        const { width, dataStreamsHistory, height, controlBlockRef, legendBlockRef, dataStreams } = this.props;
+        const {
+            width,
+            dataStreamsHistory,
+            height,
+            controlBlockRef,
+            legendBlockRef,
+            dataStreams,
+            showXAxis,
+        } = this.props;
 
         const margin = 3;
+        const tipTimeWidth = 125;
+
+        const showXAxisMargin = showXAxis ? 30 : 23;
 
         const svg = d3
             .select(this.containerRef)
@@ -23,7 +49,7 @@ export default class DataStreamsChart extends React.Component {
             .attr('height', height)
             .attr('class', styles.svg);
 
-        const chart = svg.append('g').attr('transform', `translate(0,${margin})`);
+        const chart = svg.append('g').attr('transform', `translate(0,${margin - showXAxisMargin})`);
 
         const colors = d3.scaleOrdinal(d3.schemeCategory10);
 
@@ -37,14 +63,23 @@ export default class DataStreamsChart extends React.Component {
         });
         this.lastChartTime = maxTime;
 
+        const tipTimeFormat = d3.timeFormat('%Y-%m-%d %H:%M:%S');
+
+        let dragging = false;
         let xScale;
         let yScales;
+        let xAxisScale;
 
         // Draw/redraw chart
         const redraw = firstDraw => {
             xScale = d3
                 .scaleLinear()
                 .domain([this.lastChartTime - this.chartDuration, this.lastChartTime])
+                .range([0, width]);
+
+            xAxisScale = d3
+                .scaleTime()
+                .domain([new Date(this.lastChartTime - this.chartDuration), new Date(this.lastChartTime)])
                 .range([0, width]);
 
             yScales = {};
@@ -54,7 +89,7 @@ export default class DataStreamsChart extends React.Component {
                 yScales[dataIdx] = d3
                     .scaleLinear()
                     .domain(d3.extent(data, d => d[1]))
-                    .range([height - margin, margin]);
+                    .range([height - margin, margin + showXAxisMargin]);
             });
 
             // Draw lines for dataStreams
@@ -94,7 +129,7 @@ export default class DataStreamsChart extends React.Component {
                     axis = chart
                         .append('g')
                         .attr('class', cn(styles.leftAxis, `leftAxis${dataIdx}`))
-                        .attr('transform', `translate(${30 + 30 * axisOrder}, ${20})`);
+                        .attr('transform', `translate(${30 + 30 * axisOrder}, 0)`);
                 } else {
                     axis = chart.select(`.leftAxis${dataIdx}`);
                 }
@@ -102,10 +137,32 @@ export default class DataStreamsChart extends React.Component {
                 axis.call(leftAxis)
                     .call(axis => axis.select('.domain').remove())
                     .call(axis => axis.selectAll('line').remove())
-                    .call(axis => axis.selectAll('text').attr('fill', colors(dataIdx)));
+                    .call(axis =>
+                        axis.selectAll('text').attr(
+                            'fill',
+                            chroma(colors(dataIdx))
+                                .brighten(0.8)
+                                .css(),
+                        ),
+                    );
 
                 axisOrder += 1;
             });
+
+            // Draw time(x) axis
+            if (showXAxis) {
+                let axis;
+                if (firstDraw) {
+                    axis = chart
+                        .append('g')
+                        .attr('class', 'timeAxis')
+                        .attr('transform', `translate(0, ${height + margin})`);
+                } else {
+                    axis = chart.select('.timeAxis');
+                }
+
+                axis.call(d3.axisBottom(xAxisScale));
+            }
         };
 
         // Instant run first draw
@@ -115,7 +172,8 @@ export default class DataStreamsChart extends React.Component {
         const zoom = d3.zoom().on('zoom', () => {
             this.chartDuration = this.originalChartDuration * (1 / d3.event.transform.k);
 
-            svg.select('.tipGroup')
+            chart
+                .select('.tipGroup')
                 .transition()
                 .style('opacity', '0');
 
@@ -128,13 +186,17 @@ export default class DataStreamsChart extends React.Component {
             .drag()
             .clickDistance(10)
             .on('start', () => {
+                dragging = true;
                 startX = d3.event.x;
-                svg.select('.tipGroup')
+                chart
+                    .select('.tipGroup')
                     .transition()
                     .style('opacity', '0');
             })
             .on('end', () => {
-                svg.select('.tipGroup')
+                dragging = false;
+                chart
+                    .select('.tipGroup')
                     .transition()
                     .style('opacity', '1');
             })
@@ -156,24 +218,46 @@ export default class DataStreamsChart extends React.Component {
 
         // Mouse over tooltips
         const mouseTip = selection => {
-            const tipGroup = selection.append('g').attr('class', 'tipGroup');
+            const tipGroup = chart
+                .append('g')
+                .attr('class', 'tipGroup')
+                .style('opacity', '0');
 
             tipGroup
                 .append('path') // this is the black vertical line to follow mouse
-                .attr('class', styles.tipMouseLine);
+                .attr('class', cn('tipMouseLine', styles.tipMouseLine));
+
+            const tipTime = tipGroup.append('g').attr('class', cn('tipTime', styles.tipTime));
+            tipTime
+                .append('rect')
+                .attr('class', cn('tipTimeRect', styles.tipTimeRect))
+                .attr('x', 0)
+                .attr('y', 0)
+                .attr('width', tipTimeWidth)
+                .attr('height', 15);
+
+            tipTime
+                .append('text')
+                .attr('class', 'tipTimeText')
+                .attr('text-anchor', 'middle')
+                .attr('transform', `translate(${tipTimeWidth / 2},12)`);
 
             dataStreams.forEach((dataStream, idx) => {
                 const dataStreamTip = tipGroup.append('g').attr('class', 'dataStreamTip');
 
                 dataStreamTip
                     .append('circle')
-                    .attr('class', styles.tipCircle)
+                    .attr('class', cn('tipCircle', styles.tipCircle))
                     .attr('r', 4)
                     .style('stroke', colors(idx));
+
+                dataStreamTip.append('text').attr('class', cn('tipText', styles.tipText));
             });
 
             const showTipGroup = () => {
-                tipGroup.style('opacity', '1');
+                if (!dragging) {
+                    tipGroup.style('opacity', '1');
+                }
             };
 
             const hideTipGroup = () => {
@@ -189,20 +273,35 @@ export default class DataStreamsChart extends React.Component {
                 })
                 .on('mousemove', function(d, idx, els) {
                     const mouse = d3.mouse(selection.node());
+                    const xDate = xScale.invert(mouse[0]);
 
+                    // Draw tooltip vertical line
                     tipGroup
-                        .select(`.${styles.tipMouseLine}`)
-                        .attr('d', () => d3.line()([[mouse[0], height], [mouse[0], 0]]));
+                        .select(`.tipMouseLine`)
+                        .attr('d', () => d3.line()([[mouse[0], height + margin], [mouse[0], 0]]));
 
-                    tipGroup.selectAll(`.dataStreamTip`).attr('transform', function(d, i) {
-                        const xDate = xScale.invert(mouse[0]);
+                    svg.select('.tipTime').attr(
+                        'transform',
+                        `translate(${mouse[0] - tipTimeWidth / 2},${height + margin})`,
+                    );
+                    svg.select('.tipTimeText').text(tipTimeFormat(xDate));
+
+                    // Move tooltip on lines
+                    tipGroup.selectAll(`.dataStreamTip`).each((item, idx, els) => {
                         const bisect = d3.bisector(([date]) => date).right;
 
-                        const pointIdx = bisect(dataStreamsHistory[i], xDate);
-                        const yScale = yScales[i];
-                        if (dataStreamsHistory[i][pointIdx]) {
-                            const y = yScale(dataStreamsHistory[i][pointIdx][1]);
-                            return `translate(${mouse[0]},${y})`;
+                        const pointIdx = bisect(dataStreamsHistory[idx], xDate);
+                        const yScale = yScales[idx];
+
+                        if (dataStreamsHistory[idx][pointIdx]) {
+                            const y = yScale(dataStreamsHistory[idx][pointIdx][1]);
+                            d3.select(els[idx]).attr('transform', `translate(${mouse[0]},${y})`);
+                            const value = parseFloat(Number(dataStreamsHistory[idx][pointIdx][1]).toFixed(1));
+                            d3.select(els[idx])
+                                .select('text')
+                                .text(value);
+                        } else {
+                            d3.select(els[idx]).attr('transform', `translate(-999,-999)`);
                         }
                     });
                 });
@@ -219,14 +318,22 @@ export default class DataStreamsChart extends React.Component {
             svg.call(zoom.transform, d3.zoomIdentity);
             redraw();
         };
-        ReactDOM.render(<ChartControl onChangeDuration={handleChangeDuration} />, controlBlockRef);
-        ReactDOM.render(
-            <ChartLegend onChangeDuration={handleChangeDuration} colorScale={colors} dataStreams={dataStreams} />,
-            legendBlockRef,
-        );
+
+        // Mount chart controls to ref
+        if (controlBlockRef) {
+            ReactDOM.render(<ChartControl onChangeDuration={handleChangeDuration} />, controlBlockRef);
+        }
+
+        // Mount chart legend to ref
+        if (legendBlockRef) {
+            ReactDOM.render(
+                <ChartLegend onChangeDuration={handleChangeDuration} colorScale={colors} dataStreams={dataStreams} />,
+                legendBlockRef,
+            );
+        }
     }
 
-    componentDidMount() {
+    async componentDidMount() {
         this.drawChart();
     }
 

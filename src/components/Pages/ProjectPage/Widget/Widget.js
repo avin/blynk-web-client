@@ -9,11 +9,12 @@ import EnhancedGraphView from './Views/EnhancedGraphView/EnhancedGraphView';
 import RgbView from './Views/RgbView/RgbView';
 import TwoAxisJoystickView from './Views/TwoAxisJoystickView/TwoAxisJoystickView';
 import TerminalView from './Views/TerminalView/TerminalView';
+import VerticalSliderView from './Views/VerticalSliderView/VerticalSliderView';
 
 const WIDGET_VIEW_COMPONENTS = {
     BUTTON: ButtonView,
     SLIDER: SliderView,
-    VERTICAL_SLIDER: UnknownView,
+    VERTICAL_SLIDER: VerticalSliderView,
     KNOB: UnknownView,
     TIMER: UnknownView,
     ROTARY_KNOB: UnknownView,
@@ -30,6 +31,7 @@ const WIDGET_VIEW_COMPONENTS = {
     LOGGER: UnknownView,
     ENHANCED_GRAPH: EnhancedGraphView,
     DIGIT4_DISPLAY: NumericalDisplayView,
+    LABELED_VALUE_DISPLAY: NumericalDisplayView,
     GAUGE: UnknownView,
     LCD_DISPLAY: UnknownView,
     GRAPH: UnknownView,

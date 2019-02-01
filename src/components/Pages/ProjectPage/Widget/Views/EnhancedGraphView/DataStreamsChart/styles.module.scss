@@ -18,11 +18,11 @@
     :global {
         text {
             paint-order: stroke;
-            stroke: #000000;
-            stroke-width: 1px;
+            stroke: $dark-gray3;
+            stroke-width: 3px;
             stroke-linecap: butt;
             stroke-linejoin: miter;
-            font-weight: 800;
+            font-weight: 600;
         }
     }
 }
@@ -35,4 +35,18 @@
 .tipCircle {
     stroke-width: 2px;
     fill: $dark-gray1;
+}
+
+.tipText {
+    transform: translate(6px, 4px);
+    font-size: 12px;
+    fill: $light-gray5;
+}
+
+.tipTime {
+    font-size: 13px;
+}
+
+.tipTimeRect {
+    fill: $light-gray3;
 }

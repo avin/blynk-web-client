@@ -6,13 +6,18 @@ import { pinValueSelector } from '../../../../../../redux/selectors';
 
 export class NumericalDisplayView extends React.Component {
     renderValue() {
-        const { value } = this.props;
+        const { value, widget } = this.props;
 
         let valueStr;
         if (isNaN(Number(value))) {
             valueStr = value;
         } else {
             valueStr = parseFloat(Number(value).toFixed(2));
+        }
+
+        const valueFormatting = widget.get('valueFormatting');
+        if (valueFormatting) {
+            valueStr = valueFormatting.replace(/\/pin\//gi, valueStr);
         }
 
         return <span>{valueStr}</span>;

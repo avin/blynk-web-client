@@ -8,27 +8,38 @@ import { pinValueSelector } from '../../../../../../redux/selectors';
 import styles from './styles.module.scss';
 
 export class SliderView extends React.Component {
-    handleChangeValue = value => {
+    handleChange = value => {
         const { widget } = this.props;
 
         const pin = getWidgetPinAddress(widget);
+        const fakeUpdate = widget.get('sendOnReleaseOn');
+        blynkWSClient.sendWritePin(pin, value, fakeUpdate);
+    };
 
-        blynkWSClient.sendWritePin(pin, value);
+    handleRelease = value => {
+        const { widget } = this.props;
+
+        if (widget.get('sendOnReleaseOn')) {
+            const pin = getWidgetPinAddress(widget);
+            blynkWSClient.sendWritePin(pin, value);
+        }
     };
 
     render() {
-        const { widget, value } = this.props;
+        const { widget, value, vertical } = this.props;
 
         return (
             <>
-                <WidgetLabel title={widget.get('label') || 'Slider'} information={value} />
+                <WidgetLabel title={widget.get('label') || (!vertical && 'Slider')} information={value} />
                 <div className={styles.sliderContainer}>
                     <Slider
                         value={Number(value)}
                         labelRenderer={false}
                         min={widget.get('min')}
                         max={widget.get('max')}
-                        onChange={this.handleChangeValue}
+                        onChange={this.handleChange}
+                        onRelease={this.handleRelease}
+                        vertical={vertical}
                     />
                 </div>
             </>

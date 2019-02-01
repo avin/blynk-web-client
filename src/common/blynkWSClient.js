@@ -186,12 +186,15 @@ class BlynkWSClient extends EventTarget {
      * Send value to pin
      * @param pin
      * @param value
+     * @param dontSend
      */
-    sendWritePin(pin, value) {
+    sendWritePin(pin, value, dontSend = false) {
         const pinType = pin[0];
         const pinNumber = pin.slice(1);
 
-        this.throttleSend(pin)(`hardware ${pinType}w ${pinNumber} ${value}`);
+        if (!dontSend) {
+            this.throttleSend(pin)(`hardware ${pinType}w ${pinNumber} ${value}`);
+        }
 
         this.dispatchWritePin(pin, value);
     }

@@ -6,7 +6,12 @@
     height: 100%;
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: space-between;
+    flex-direction: column;
+}
+
+.emptyFiller{
+    height: 20px;
 }
 
 .form {
@@ -42,6 +47,13 @@
 }
 
 .submitButton {
+}
+
+.error {
+    margin-top: 3px;
+    font-size: small;
+    text-align: center;
+    color: $red5;
 }
 
 .connectionProblem {

@@ -5,8 +5,17 @@ import cn from 'clsx';
 import { Button, FormGroup, HTMLSelect, InputGroup, Intent } from '@blueprintjs/core';
 import { setConnectionParams, testConnection } from '../../../redux/modules/blynk/actions';
 import styles from './styles.module.scss';
+import { required } from '../../../utils/validation';
+import GitHubLink from './GitHubLink/GitHubLink';
 
-const InputGroupField = ({ input, meta, ...props }) => <InputGroup {...{ ...input, ...props }} />;
+const ErrorString = meta => (meta.error && meta.touched ? <div className={styles.error}>{meta.error}</div> : null);
+
+const InputGroupField = ({ input, meta, ...props }) => (
+    <>
+        <InputGroup {...{ ...input, ...props }} />
+        <ErrorString {...meta} />
+    </>
+);
 
 const HTMLSelectField = ({ input, meta, ...props }) => <HTMLSelect {...{ ...input, ...props }} />;
 
@@ -43,6 +52,7 @@ export class ConnectionPage extends React.Component {
 
         return (
             <div className={cn('bp3-dark', styles.main)}>
+                <div className={styles.emptyFiller} />
                 <Form
                     onSubmit={this.handleSubmit}
                     initialValues={{
@@ -55,7 +65,7 @@ export class ConnectionPage extends React.Component {
                         <form onSubmit={handleSubmit} className={cn('bp3-card', styles.form)}>
                             <div className={styles.title}>Blynk Web-Client</div>
                             <FormGroup label="Auth token" labelFor="token-input">
-                                <Field name="token" id="token-input" component={InputGroupField} />
+                                <Field name="token" id="token-input" component={InputGroupField} validate={required} />
                             </FormGroup>
 
                             <FormGroup label="Connection mode" labelFor="connectionMode-input">
@@ -64,16 +74,26 @@ export class ConnectionPage extends React.Component {
                                     id="connectionMode-input"
                                     component={HTMLSelectField}
                                     fill
-                                    options={[{ label: 'SSL', value: 'ssl' }, { label: 'No SSL', value: 'no-ssl' }]}
+                                    options={[{ label: 'No SSL', value: 'no-ssl' }, { label: 'SSL', value: 'ssl' }]}
                                 />
                             </FormGroup>
 
                             <FormGroup label="Server Host" labelFor="serverHost-input">
-                                <Field name="serverHost" id="serverHost-input" component={InputGroupField} />
+                                <Field
+                                    name="serverHost"
+                                    id="serverHost-input"
+                                    component={InputGroupField}
+                                    validate={required}
+                                />
                             </FormGroup>
 
                             <FormGroup label="Server Port" labelFor="serverPort-input">
-                                <Field name="serverPort" id="serverPort-input" component={InputGroupField} />
+                                <Field
+                                    name="serverPort"
+                                    id="serverPort-input"
+                                    component={InputGroupField}
+                                    validate={required}
+                                />
                             </FormGroup>
 
                             <Button
@@ -95,6 +115,8 @@ export class ConnectionPage extends React.Component {
                         </form>
                     )}
                 />
+
+                <GitHubLink />
             </div>
         );
     }

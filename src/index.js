@@ -1,6 +1,5 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import 'blynk-library/blynk-browser';
 import { FocusStyleManager } from '@blueprintjs/core';
 import configureStore from './redux/store';
 import Root from './components/Root/Root';

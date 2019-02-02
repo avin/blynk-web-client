@@ -2,9 +2,9 @@
 
 > SPA Web Client for [Blynk](https://www.blynk.cc/)
 
-## Demo
+## Run online
 
-[ >> [Online demo](https://avin.github.io/blynk-web-client/) << ]
+[ >> [Get started!](https://avin.github.io/blynk-web-client/) << ]
 
 ## Features
 
@@ -26,6 +26,10 @@
 -   STEP
 -   VERTICAL_STEP
 -   LED
+
+### Preview
+
+![demo](./assets/preview.png)
 
 ## License
 

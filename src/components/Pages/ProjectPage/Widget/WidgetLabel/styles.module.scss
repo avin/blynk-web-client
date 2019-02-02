@@ -3,12 +3,14 @@
 .root {
     width: 100%;
     display: flex;
+    flex-wrap: wrap;
     margin-bottom: 8px;
     justify-content: space-between;
 }
 
 .title{
-
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .information{

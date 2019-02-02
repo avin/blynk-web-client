@@ -1,0 +1,13 @@
+@import 'src/styles/variables.scss';
+
+.ledContainer{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.ledCircle{
+    fill: $blue5;
+    stroke: $blue1;
+    stroke-width: 1px;
+}

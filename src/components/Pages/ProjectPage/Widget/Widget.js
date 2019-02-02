@@ -10,54 +10,29 @@ import RgbView from './Views/RgbView/RgbView';
 import TwoAxisJoystickView from './Views/TwoAxisJoystickView/TwoAxisJoystickView';
 import TerminalView from './Views/TerminalView/TerminalView';
 import VerticalSliderView from './Views/VerticalSliderView/VerticalSliderView';
+import LcdDisplayView from './Views/LcdDisplayView/LcdDisplayView';
+import GaugeView from './Views/GaugeView/GaugeView';
+import LevelView from './Views/LevelView/LevelView';
+import StepView from './Views/StepView/StepView';
+import LedView from './Views/LedView/LedView';
 
 const WIDGET_VIEW_COMPONENTS = {
     BUTTON: ButtonView,
     SLIDER: SliderView,
     VERTICAL_SLIDER: VerticalSliderView,
-    KNOB: UnknownView,
-    TIMER: UnknownView,
-    ROTARY_KNOB: UnknownView,
     RGB: RgbView,
-    TWO_WAY_ARROW: UnknownView,
-    FOUR_WAY_ARROW: UnknownView,
-    ONE_AXIS_JOYSTICK: UnknownView,
     TWO_AXIS_JOYSTICK: TwoAxisJoystickView,
-    GAMEPAD: UnknownView,
-    KEYPAD: UnknownView,
-
-    // outputs
-    LED: UnknownView,
-    LOGGER: UnknownView,
     ENHANCED_GRAPH: EnhancedGraphView,
     DIGIT4_DISPLAY: NumericalDisplayView,
     LABELED_VALUE_DISPLAY: NumericalDisplayView,
-    GAUGE: UnknownView,
-    LCD_DISPLAY: UnknownView,
-    GRAPH: UnknownView,
-    LEVEL_DISPLAY: UnknownView,
+    GAUGE: GaugeView,
+    LCD: LcdDisplayView,
+    LEVEL_DISPLAY: LevelView,
+    VERTICAL_LEVEL_DISPLAY: LevelView,
     TERMINAL: TerminalView,
-
-    // inputs
-    MICROPHONE: UnknownView,
-    GYROSCOPE: UnknownView,
-    ACCELEROMETER: UnknownView,
-    GPS: UnknownView,
-
-    // notifications
-    TWITTER: UnknownView,
-    EMAIL: UnknownView,
-    NOTIFICATION: UnknownView,
-
-    // other
-    SD_CARD: UnknownView,
-    EVENTOR: UnknownView,
-    RCT: UnknownView,
-    BRIDGE: UnknownView,
-    BLUETOOTH: UnknownView,
-
-    // UI
-    MENU: UnknownView,
+    STEP: StepView,
+    VERTICAL_STEP: StepView,
+    LED: LedView,
 };
 
 export class Widget extends React.Component {

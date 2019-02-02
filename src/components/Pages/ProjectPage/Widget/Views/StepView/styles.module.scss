@@ -1,0 +1,29 @@
+@import 'src/styles/variables.scss';
+
+.buttonsContainer {
+    display: flex;
+    flex-grow: 1;
+}
+
+.verticalButtonsContainer {
+    @extend .buttonsContainer;
+
+    flex-direction: column;
+}
+
+.dividerVertical {
+    width: 1px;
+    background-color: $gray1;
+    margin: 0 5px;
+}
+
+.dividerHorizontal {
+    height: 1px;
+    background-color: $gray1;
+    margin: 5px 0;
+}
+
+.button {
+    flex-grow: 1;
+    font-size: 20px !important;
+}

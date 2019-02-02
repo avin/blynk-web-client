@@ -1,0 +1,35 @@
+@import 'src/styles/variables.scss';
+
+.backLine {
+    fill: $dark-gray5;
+}
+
+.frontLine {
+    fill: $blue5;
+}
+
+.value {
+    font-size: 14px;
+    color: $blue5;
+    text-align: center;
+
+    :global{
+        .pinValue{
+            font-size: 24px;
+        }
+    }
+}
+
+.minMaxLabel{
+    font-size: 11px;
+    fill: $gray5;
+}
+
+.minLabel{
+    @extend .minMaxLabel;
+    text-anchor: start;
+}
+.maxLabel{
+    @extend .minMaxLabel;
+    text-anchor: end;
+}

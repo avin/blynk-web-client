@@ -1,5 +1,8 @@
 @import 'src/styles/variables.scss';
 
+$mainWidth: 560px;
+$halfWidth: $mainWidth/2;
+
 .root {
     display: flex;
     flex-direction: column;
@@ -9,8 +12,16 @@
 .workspace{
     overflow: auto;
     flex-grow: 1;
-    padding: 10px;
     color: $gray3;
+    display: flex;
+    justify-content: center;
+}
+
+.workspaceInner{
+    position: absolute;
+    left: calc(50% - #{$halfWidth});
+    padding: 5px 0;
+
 }
 
 :global(.bp3-dark) .workspace{
@@ -22,7 +33,18 @@
     flex-shrink: 0;
     background-color: $gray5;
     border-bottom: 1px solid $gray1;
-    padding: 10px;
+    line-height: 30px;
+
+    display: flex;
+    justify-content: center;
+}
+
+.headerInner{
+    max-width: $mainWidth;
+    min-width: $mainWidth;
+    display: flex;
+    justify-content: space-between;
+    padding: 5px;
 }
 
 :global(.bp3-dark) .header{

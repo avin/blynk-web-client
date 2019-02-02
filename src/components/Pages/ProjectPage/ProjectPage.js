@@ -1,10 +1,13 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import cn from 'clsx';
-import { getProject, setPinValue } from '../../../redux/modules/blynk/actions';
+import { Button } from '@blueprintjs/core';
+import SizeMe from '@avinlab/react-size-me';
+import { getProject, logout, setPinValue } from '../../../redux/modules/blynk/actions';
 import styles from './styles.module.scss';
 import Widget from './Widget/Widget';
 import blynkWSClient from '../../../common/blynkWSClient';
+import Scrollbar from '../Scrollbar/Scrollbar';
 
 export class ProjectPage extends React.Component {
     async getProject() {
@@ -58,6 +61,12 @@ export class ProjectPage extends React.Component {
         return widgets;
     }
 
+    handleCloseConnection = () => {
+        const { history, logout } = this.props;
+        logout();
+        history.push('/connection');
+    };
+
     render() {
         const { project } = this.props;
 
@@ -70,10 +79,25 @@ export class ProjectPage extends React.Component {
         return (
             <div className={cn(styles.root, { 'bp3-dark': isDarkTheme })}>
                 <div className={styles.header}>
-                    <div className={styles.headerTitle}>{project.get('name')}</div>
+                    <div className={styles.headerInner}>
+                        <div className={styles.headerTitle}>{project.get('name')}</div>
+                        <div>
+                            <Button icon="log-out" onClick={this.handleCloseConnection} />
+                        </div>
+                    </div>
                 </div>
                 <div className={styles.workspace}>
-                    <div className={styles.widgetsArea}>{this.renderWidgets()}</div>
+                    <SizeMe>
+                        {({ width, height }) => {
+                            return (
+                                <Scrollbar style={{ height, width }}>
+                                    <div className={styles.workspaceInner}>
+                                        <div className={styles.widgetsArea}>{this.renderWidgets()}</div>
+                                    </div>
+                                </Scrollbar>
+                            );
+                        }}
+                    </SizeMe>
                 </div>
             </div>
         );
@@ -95,5 +119,6 @@ export default connect(
     {
         getProject,
         setPinValue,
+        logout,
     },
 )(ProjectPage);

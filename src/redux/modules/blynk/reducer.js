@@ -1,5 +1,5 @@
 import * as Immutable from 'immutable';
-import { SET_CONNECTION_PARAMS, SET_PROJECT, SET_PIN_VALUE, SET_PIN_HISTORY } from './actionTypes';
+import { SET_CONNECTION_PARAMS, SET_PROJECT, SET_PIN_VALUE, SET_PIN_HISTORY, SET_TOKEN } from './actionTypes';
 import { getWidgetPinAddress } from '../../../utils/data';
 
 const defaultToken = localStorage.getItem('blynk-web-client:token');
@@ -24,6 +24,10 @@ export default function reducer(state = initialState, action = {}) {
                 .set('token', token)
                 .set('serverHost', serverHost)
                 .set('serverPort', serverPort);
+        }
+        case SET_TOKEN: {
+            const { token } = action;
+            return state.set('token', token);
         }
         case SET_PROJECT: {
             let { project } = action;

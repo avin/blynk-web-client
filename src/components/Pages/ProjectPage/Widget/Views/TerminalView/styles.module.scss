@@ -1,12 +1,12 @@
 .outputContainer{
     flex-grow: 1;
     display: flex;
+    margin-bottom: 5px;
 }
 .output{
     flex-grow: 1;
     min-height: 100%;
-    margin-top: 0px !important;
-    margin-bottom: 5px !important;
+    margin: 0 !important;
     padding: 5px 10px !important;
     overflow: auto;
 }

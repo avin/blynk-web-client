@@ -8,7 +8,7 @@
 
 ## Features
 
-### Released widgets
+### Ready widgets
 
 -   BUTTON
 -   SLIDER

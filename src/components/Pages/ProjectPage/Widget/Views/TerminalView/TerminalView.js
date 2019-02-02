@@ -2,8 +2,10 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Button, InputGroup } from '@blueprintjs/core';
 import cn from 'clsx';
+import SizeMe from '@avinlab/react-size-me';
 import { pinValueSelector } from '../../../../../../redux/selectors';
 import styles from './styles.module.scss';
+import Scrollbar from '../../../../Scrollbar/Scrollbar';
 
 export class TerminalView extends React.Component {
     handleSendInput = () => {};
@@ -12,8 +14,11 @@ export class TerminalView extends React.Component {
         return (
             <>
                 <div className={styles.outputContainer}>
-                    <pre className={cn('bp3-code-block', styles.output)}>
-                        {`export function hasModifier(
+                    <SizeMe>
+                        {({ width, height }) => (
+                            <Scrollbar style={{ height, width }}>
+                                <pre className={cn('bp3-code-block', styles.output)}>
+                                    {`export function hasModifier(
   modifiers: ts.ModifiersArray,
   ...modifierKinds: ts.SyntaxKind[],
 ) {
@@ -22,7 +27,10 @@ export class TerminalView extends React.Component {
   }
   return modifiers.some(m => modifierKinds.some(k => m.kind === k));
   `}
-                    </pre>
+                                </pre>
+                            </Scrollbar>
+                        )}
+                    </SizeMe>
                 </div>
                 <InputGroup
                     placeholder="..."

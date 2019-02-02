@@ -2,8 +2,9 @@ import request from 'superagent';
 import * as Immutable from 'immutable';
 import pako from 'pako';
 import * as d3 from 'd3';
-import { SET_CONNECTION_PARAMS, SET_PIN_VALUE, SET_PROJECT, SET_PIN_HISTORY } from './actionTypes';
+import { SET_CONNECTION_PARAMS, SET_PIN_VALUE, SET_PROJECT, SET_PIN_HISTORY, SET_TOKEN } from './actionTypes';
 import { listToMap } from '../../../utils/immutable';
+import blynkWSClient from '../../../common/blynkWSClient';
 
 /**
  * Setup connection options
@@ -23,6 +24,16 @@ export function setConnectionParams({ token, serverHost, serverPort }) {
         token,
         serverHost,
         serverPort,
+    };
+}
+
+export function logout() {
+    blynkWSClient.stop();
+    localStorage.setItem('blynk-web-client:token', '');
+
+    return {
+        type: SET_TOKEN,
+        token: '',
     };
 }
 

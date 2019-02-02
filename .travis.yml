@@ -13,9 +13,14 @@ script:
   - yarn run build
 
 deploy:
-  provider: pages
-  skip_cleanup: true
-  github_token: $GITHUB_TOKEN
-  local_dir: build
-  on:
-    branch: master
+    - gh
+        provider: pages
+        skip_cleanup: true
+        github_token: $GITHUB_TOKEN
+        local_dir: build
+        on:
+          branch: master
+    - surge
+        provider: surge
+        project: ./build/
+        domain: blynk-client.surge.sh

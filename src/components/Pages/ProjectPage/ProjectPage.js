@@ -22,13 +22,14 @@ export class ProjectPage extends React.Component {
     }
 
     initWSClient = () => {
-        const { token, serverHost, serverPort } = this.props;
+        const { token, serverHost, serverPort, connectionMode } = this.props;
 
         // Connect to blynk ws server
         blynkWSClient.init({
             token,
             serverHost,
             serverPort,
+            connectionMode,
         });
 
         blynkWSClient.addEventListener('write-pin', this.handleWritePin);
@@ -74,7 +75,7 @@ export class ProjectPage extends React.Component {
             return <div />;
         }
 
-        const isDarkTheme = project.get('theme') === 'Blynk';
+        const isDarkTheme = project.get('theme') === 'Blynk' || true;
 
         return (
             <div className={cn(styles.root, { 'bp3-dark': isDarkTheme })}>
@@ -109,6 +110,7 @@ function mapStateToProps(state, ownProps) {
         token: state.blynk.get('token'),
         serverHost: state.blynk.get('serverHost'),
         serverPort: state.blynk.get('serverPort'),
+        connectionMode: state.blynk.get('connectionMode'),
 
         project: state.blynk.get('project'),
     };

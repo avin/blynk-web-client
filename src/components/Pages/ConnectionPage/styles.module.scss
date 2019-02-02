@@ -1,0 +1,51 @@
+@import 'src/styles/variables.scss';
+
+.main {
+    background-color: $dark-gray1;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.form {
+    background-color: $dark-gray5 !important;
+    width: 350px;
+    animation: form-appear 500ms linear;
+}
+
+@keyframes form-appear {
+    0% {
+        opacity: 0;
+        margin-top: 20px;
+    }
+
+    100% {
+        opacity: 1;
+        margin-top: 0;
+    }
+}
+
+.title {
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
+    text-transform: uppercase;
+
+    color: $blue5;
+
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+
+    border-bottom: 1px solid $gray1;
+}
+
+.submitButton {
+}
+
+.connectionProblem {
+    margin-top: 10px;
+    text-align: center;
+    color: $red5;
+}

@@ -84,11 +84,13 @@ class BlynkWSClient extends EventTarget {
      * @param serverHost
      * @param serverPort
      */
-    init({ token, serverHost, serverPort }) {
+    init({ token, serverHost, serverPort, connectionMode }) {
         this.stop();
         this.token = token;
 
-        this.socket = new WebSocket(`ws://${serverHost}:${serverPort}/websockets`);
+        this.socket = new WebSocket(
+            `${connectionMode === 'no-ssl' ? 'ws' : 'wss'}://${serverHost}:${serverPort}/websockets`,
+        );
         this.socket.binaryType = 'arraybuffer';
 
         this.socket.onmessage = this.handleWSMessage;

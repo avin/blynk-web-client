@@ -5,6 +5,7 @@ import * as d3 from 'd3';
 import { SET_CONNECTION_PARAMS, SET_PIN_VALUE, SET_PROJECT, SET_PIN_HISTORY, SET_TOKEN } from './actionTypes';
 import { listToMap } from '../../../utils/immutable';
 import blynkWSClient from '../../../common/blynkWSClient';
+import { getHttpBlynkUrl } from '../../../utils/connection';
 
 /**
  * Setup connection options
@@ -13,17 +14,19 @@ import blynkWSClient from '../../../common/blynkWSClient';
  * @param serverPort
  * @returns {{type: string, serverPort: *, serverHost: *, token: *}}
  */
-export function setConnectionParams({ token, serverHost, serverPort }) {
+export function setConnectionParams({ token, serverHost, serverPort, connectionMode }) {
     // Save base options to localstorage
     localStorage.setItem('blynk-web-client:token', token);
     localStorage.setItem('blynk-web-client:serverHost', serverHost);
     localStorage.setItem('blynk-web-client:serverPort', serverPort);
+    localStorage.setItem('blynk-web-client:connectionMode', connectionMode);
 
     return {
         type: SET_CONNECTION_PARAMS,
         token,
         serverHost,
         serverPort,
+        connectionMode,
     };
 }
 
@@ -43,10 +46,10 @@ export function logout() {
  */
 export function getProject() {
     return async (dispatch, getState) => {
-        const { token, serverHost, serverPort } = getState().blynk.toObject();
+        const { token, serverHost, serverPort, connectionMode } = getState().blynk.toObject();
 
         let { body: project } = await request
-            .get(`http://${serverHost}:${serverPort}/${token}/project`)
+            .get(`${getHttpBlynkUrl({ token, serverHost, serverPort, connectionMode })}/project`)
             .set('accept', 'json');
 
         project = Immutable.fromJS(project);
@@ -66,9 +69,11 @@ export function getProject() {
  */
 export function testConnection() {
     return async (dispatch, getState) => {
-        const { token, serverHost, serverPort } = getState().blynk.toObject();
+        const { token, serverHost, serverPort, connectionMode } = getState().blynk.toObject();
 
-        await request.get(`http://${serverHost}:${serverPort}/${token}/isAppConnected`).set('accept', 'json');
+        await request
+            .get(`${getHttpBlynkUrl({ token, serverHost, serverPort, connectionMode })}/isAppConnected`)
+            .set('accept', 'json');
     };
 }
 
@@ -88,10 +93,17 @@ export function setPinValue(pin, value) {
 
 export function getPinHistory(pin) {
     return async (dispatch, getState) => {
-        const { token, serverHost, serverPort } = getState().blynk.toObject();
+        const { token, serverHost, serverPort, connectionMode } = getState().blynk.toObject();
 
         const res = await request
-            .get(`http://${serverHost}:${serverPort}/${token}/data/${pin.toUpperCase()}`)
+            .get(
+                `${getHttpBlynkUrl({
+                    token,
+                    serverHost,
+                    serverPort,
+                    connectionMode,
+                })}/data/${pin.toUpperCase()}`,
+            )
             .responseType('blob');
 
         const processData = data =>

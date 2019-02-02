@@ -5,11 +5,13 @@ import { getWidgetPinAddress } from '../../../utils/data';
 const defaultToken = localStorage.getItem('blynk-web-client:token');
 const defaultServerHost = localStorage.getItem('blynk-web-client:serverHost') || 'blynk-cloud.com';
 const defaultPort = Number(localStorage.getItem('blynk-web-client:serverPort')) || 8082;
+const defaultConnectionMode = Number(localStorage.getItem('blynk-web-client:connectionMode')) || 'no-ssl';
 
 const initialState = Immutable.fromJS({
     token: defaultToken,
     serverHost: defaultServerHost,
     serverPort: defaultPort,
+    connectionMode: defaultConnectionMode,
 
     project: null,
     pins: {},
@@ -19,11 +21,12 @@ const initialState = Immutable.fromJS({
 export default function reducer(state = initialState, action = {}) {
     switch (action.type) {
         case SET_CONNECTION_PARAMS: {
-            const { token, serverHost, serverPort } = action;
+            const { token, serverHost, serverPort, connectionMode } = action;
             return state
                 .set('token', token)
                 .set('serverHost', serverHost)
-                .set('serverPort', serverPort);
+                .set('serverPort', serverPort)
+                .set('connectionMode', connectionMode);
         }
         case SET_TOKEN: {
             const { token } = action;

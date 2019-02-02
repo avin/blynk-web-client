@@ -1,7 +1,14 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Form, Field } from 'react-final-form';
+import cn from 'clsx';
+import { Button, FormGroup, HTMLSelect, InputGroup, Intent } from '@blueprintjs/core';
 import { setConnectionParams, testConnection } from '../../../redux/modules/blynk/actions';
+import styles from './styles.module.scss';
+
+const InputGroupField = ({ input, meta, ...props }) => <InputGroup {...{ ...input, ...props }} />;
+
+const HTMLSelectField = ({ input, meta, ...props }) => <HTMLSelect {...{ ...input, ...props }} />;
 
 export class ConnectionPage extends React.Component {
     state = {
@@ -16,6 +23,7 @@ export class ConnectionPage extends React.Component {
             token: params.token,
             serverHost: params.serverHost,
             serverPort: params.serverPort,
+            connectionMode: params.connectionMode,
         });
 
         this.setState({ busy: true });
@@ -31,43 +39,62 @@ export class ConnectionPage extends React.Component {
 
     render() {
         const { busy, connectionError } = this.state;
-        const { token, serverHost, serverPort } = this.props;
+        const { token, serverHost, serverPort, connectionMode } = this.props;
 
         return (
-            <div>
+            <div className={cn('bp3-dark', styles.main)}>
                 <Form
                     onSubmit={this.handleSubmit}
                     initialValues={{
                         token,
                         serverHost,
                         serverPort,
+                        connectionMode,
                     }}
                     render={({ handleSubmit }) => (
-                        <form onSubmit={handleSubmit}>
-                            <div>
-                                <label>Auth token</label>
-                                <Field name="token" component="input" />
-                            </div>
+                        <form onSubmit={handleSubmit} className={cn('bp3-card', styles.form)}>
+                            <div className={styles.title}>Blynk Web-Client</div>
+                            <FormGroup label="Auth token" labelFor="token-input">
+                                <Field name="token" id="token-input" component={InputGroupField} />
+                            </FormGroup>
 
-                            <h2>Custom server</h2>
+                            <FormGroup label="Connection mode" labelFor="connectionMode-input">
+                                <Field
+                                    name="connectionMode"
+                                    id="connectionMode-input"
+                                    component={HTMLSelectField}
+                                    fill
+                                    options={[{ label: 'SSL', value: 'ssl' }, { label: 'No SSL', value: 'no-ssl' }]}
+                                />
+                            </FormGroup>
 
-                            <div>
-                                <label>Host</label>
-                                <Field name="serverHost" component="input" />
-                            </div>
+                            <FormGroup label="Server Host" labelFor="serverHost-input">
+                                <Field name="serverHost" id="serverHost-input" component={InputGroupField} />
+                            </FormGroup>
 
-                            <div>
-                                <label>Port</label>
-                                <Field name="serverPort" component="input" />
-                            </div>
+                            <FormGroup label="Server Port" labelFor="serverPort-input">
+                                <Field name="serverPort" id="serverPort-input" component={InputGroupField} />
+                            </FormGroup>
 
-                            <button type="submit" disabled={busy}>
+                            <Button
+                                type="submit"
+                                disabled={busy}
+                                icon="log-in"
+                                fill
+                                className={styles.submitButton}
+                                intent={Intent.PRIMARY}
+                            >
                                 {busy ? 'Connecting...' : 'Connect'}
-                            </button>
+                            </Button>
+
+                            {connectionError && (
+                                <div className={styles.connectionProblem}>
+                                    Connection to server problem ({connectionError})
+                                </div>
+                            )}
                         </form>
                     )}
                 />
-                {connectionError && <span>Connection to server problem ({connectionError})</span>}
             </div>
         );
     }
@@ -78,6 +105,7 @@ function mapStateToProps(state, ownProps) {
         token: state.blynk.get('token'),
         serverHost: state.blynk.get('serverHost'),
         serverPort: state.blynk.get('serverPort'),
+        connectionMode: state.blynk.get('connectionMode'),
     };
 }
 

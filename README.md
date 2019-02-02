@@ -2,9 +2,9 @@
 
 > SPA Web Client for [Blynk](https://www.blynk.cc/)
 
-## Run online
+## Online client
 
-[ >> [Get started!](https://avin.github.io/blynk-web-client/) << ]
+[ >> [Get started!](http://blynk-client.surge.sh) << ]
 
 ## Features
 

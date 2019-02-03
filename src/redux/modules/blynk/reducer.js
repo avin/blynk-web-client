@@ -16,6 +16,7 @@ const initialState = Immutable.fromJS({
     project: null,
     pins: {},
     pinsHistory: {},
+    pinsWriteHistory: {},
 });
 
 export default function reducer(state = initialState, action = {}) {
@@ -40,10 +41,14 @@ export default function reducer(state = initialState, action = {}) {
 
             const processWidgetPin = widgetPinBlock => {
                 const pin = widgetPinBlock.get('pin', -1);
+                const value = widgetPinBlock.get('value');
                 if (pin !== -1) {
                     const pinId = getWidgetPinAddress(widgetPinBlock);
-                    pins = pins.set(pinId, widgetPinBlock.get('value'));
                     widgetPinBlock = widgetPinBlock.set('pinId', pinId);
+
+                    if (value !== undefined) {
+                        pins = pins.set(pinId, value);
+                    }
                 }
                 return widgetPinBlock;
             };
@@ -77,6 +82,12 @@ export default function reducer(state = initialState, action = {}) {
         }
         case SET_PIN_VALUE: {
             const { pin, value } = action;
+
+            // Write value to pinsWriteHistory
+            let pinWriteHistory = state.getIn(['pinsWriteHistory', pin], new Immutable.List());
+            pinWriteHistory = pinWriteHistory.push(value);
+            state = state.setIn(['pinsWriteHistory', pin], pinWriteHistory);
+
             return state.setIn(['pins', pin], value);
         }
         case SET_PIN_HISTORY: {

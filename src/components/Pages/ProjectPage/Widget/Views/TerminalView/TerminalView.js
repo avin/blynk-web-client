@@ -6,36 +6,101 @@ import SizeMe from '@avinlab/react-size-me';
 import { pinValueSelector } from '../../../../../../redux/selectors';
 import styles from './styles.module.scss';
 import Scrollbar from '../../../../Scrollbar/Scrollbar';
+import { getWidgetPinAddress } from '../../../../../../utils/data';
+import blynkWSClient from '../../../../../../common/blynkWSClient';
 
 export class TerminalView extends React.Component {
-    handleSendInput = () => {};
+    state = {
+        inputValue: '',
+    };
+
+    lastOwnChange = false;
+
+    handleSendInput = () => {
+        const { widget } = this.props;
+        const { inputValue } = this.state;
+
+        const pin = getWidgetPinAddress(widget);
+        if (pin !== -1) {
+            this.lastOwnChange = true;
+            blynkWSClient.sendWritePin(pin, inputValue);
+        }
+
+        this.setState({ inputValue: '' });
+    };
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        if (prevProps.pinWriteHistory !== this.props.pinWriteHistory) {
+            if (this.props.widget.get('autoScrollOn')) {
+                this.scrollComponent.scrollToBottom();
+            }
+        }
+    }
+
+    handleChangeInput = e => {
+        const inputValue = e.currentTarget.value;
+        this.setState({ inputValue });
+    };
+
+    handleKeyPress = e => {
+        const keyCode = e.keyCode ? e.keyCode : e.which;
+        if (keyCode === 13) {
+            this.handleSendInput();
+
+            return false;
+        }
+    };
+
+    generateHistoryOutput() {
+        const { pinWriteHistory, widget } = this.props;
+        let output = '';
+        if (pinWriteHistory) {
+            pinWriteHistory.forEach((historyItem, idx) => {
+                if (this.lastOwnChange && idx === pinWriteHistory.size - 1) {
+                    output += '> ';
+                    this.lastOwnChange = false;
+                }
+                output += historyItem;
+                if (widget.get('attachNewLine')) {
+                    output += '\r\n';
+                }
+            });
+        }
+        return output;
+    }
 
     render() {
+        const { widget } = this.props;
+        const { inputValue } = this.state;
+        const terminalInputOn = widget.get('terminalInputOn');
+
         return (
             <>
                 <div className={styles.outputContainer}>
                     <SizeMe>
                         {({ width, height }) => (
-                            <Scrollbar style={{ height, width }}>
+                            <Scrollbar
+                                style={{ height, width }}
+                                scrollRef={i => {
+                                    this.scrollComponent = i;
+                                }}
+                            >
                                 <pre className={cn('bp3-code-block', styles.output)}>
-                                    {`export function hasModifier(
-  modifiers: ts.ModifiersArray,
-  ...modifierKinds: ts.SyntaxKind[],
-) {
-  if (modifiers == null || modifierKinds == null) {
-    return false;
-  }
-  return modifiers.some(m => modifierKinds.some(k => m.kind === k));
-  `}
+                                    {this.generateHistoryOutput()}
                                 </pre>
                             </Scrollbar>
                         )}
                     </SizeMe>
                 </div>
-                <InputGroup
-                    placeholder="..."
-                    rightElement={<Button icon="key-enter" minimal={true} onClick={this.handleSendInput} />}
-                />
+                {terminalInputOn && (
+                    <InputGroup
+                        placeholder="Type here"
+                        value={inputValue}
+                        onChange={this.handleChangeInput}
+                        onKeyPress={this.handleKeyPress}
+                        rightElement={<Button icon="key-enter" minimal={true} onClick={this.handleSendInput} />}
+                    />
+                )}
             </>
         );
     }
@@ -43,8 +108,10 @@ export class TerminalView extends React.Component {
 
 function mapStateToProps(state, ownProps) {
     const pinId = ownProps.widget.get('pinId');
+
     return {
         value: pinValueSelector(state, pinId),
+        pinWriteHistory: state.blynk.getIn(['pinsWriteHistory', pinId]),
     };
 }
 

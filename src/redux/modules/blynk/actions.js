@@ -12,6 +12,7 @@ import { getHttpBlynkUrl } from '../../../utils/connection';
  * @param token
  * @param serverHost
  * @param serverPort
+ * @param connectionMode
  * @returns {{type: string, serverPort: *, serverHost: *, token: *}}
  */
 export function setConnectionParams({ token, serverHost, serverPort, connectionMode }) {

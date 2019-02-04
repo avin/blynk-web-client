@@ -12,7 +12,7 @@ You have to install [Node.js](https://nodejs.org/en/) and [Yarn](https://yarnpkg
 
 Build procedure:
 ```
-git clone --depth=1 git@github.com:avin/blynk-web-client.git
+git clone --depth=1 https://github.com/avin/blynk-web-client.git
 cd ./blynk-web-client
 yarn
 yarn run build

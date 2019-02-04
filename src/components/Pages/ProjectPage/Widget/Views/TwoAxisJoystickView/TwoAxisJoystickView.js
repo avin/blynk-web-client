@@ -14,8 +14,8 @@ export class TwoAxisJoystickView extends React.Component {
     handleDrag = (e, { deltaX, deltaY }) => {
         const { widget, pin1Value, pin2Value } = this.props;
 
-        const x = ((-512 + Number(pin1Value)) / 512) * this.margin;
-        const y = ((-512 + Number(pin2Value)) / 512) * this.margin * -1;
+        const x = ((-this.getMiddleX() + Number(pin1Value)) / this.getMiddleX()) * this.margin;
+        const y = ((-this.getMiddleY() + Number(pin2Value)) / this.getMiddleY()) * this.margin * -1;
 
         let rX = x + deltaX;
         let rY = y + deltaY;
@@ -33,10 +33,10 @@ export class TwoAxisJoystickView extends React.Component {
         const pin2Id = widget.getIn(['pins', 1, 'pinId']);
 
         if (pin1Id !== -1) {
-            blynkWSClient.sendWritePin(pin1Id, Math.floor(512 + (rX / this.margin) * 512));
+            blynkWSClient.sendWritePin(pin1Id, Math.floor(this.getMiddleX() + (rX / this.margin) * this.getMiddleX()));
         }
         if (pin2Id !== -1) {
-            blynkWSClient.sendWritePin(pin2Id, Math.floor(512 - (rY / this.margin) * 512));
+            blynkWSClient.sendWritePin(pin2Id, Math.floor(this.getMiddleY() - (rY / this.margin) * this.getMiddleY()));
         }
     };
 
@@ -47,12 +47,27 @@ export class TwoAxisJoystickView extends React.Component {
         const pin2Id = widget.getIn(['pins', 1, 'pinId']);
 
         if (pin1Id !== -1) {
-            blynkWSClient.sendWritePin(pin1Id, 512);
+            blynkWSClient.sendWritePin(pin1Id, this.getMiddleX());
         }
         if (pin2Id !== -1) {
-            blynkWSClient.sendWritePin(pin2Id, 512);
+            blynkWSClient.sendWritePin(pin2Id, this.getMiddleY());
         }
     };
+
+    getMiddleValue(pinIdx) {
+        const { widget } = this.props;
+        return (widget.getIn(['pins', pinIdx, 'max']) - widget.getIn(['pins', pinIdx, 'min']) + 1) / 2;
+    }
+
+    getMiddleX() {
+        this._middleX = this._middleX !== undefined ? this._middleX : this.getMiddleValue(0);
+        return this._middleX;
+    }
+
+    getMiddleY() {
+        this._middleY = this._middleY !== undefined ? this._middleY : this.getMiddleValue(1);
+        return this._middleY;
+    }
 
     render() {
         const { widget, pin1Value, pin2Value } = this.props;
@@ -79,8 +94,8 @@ export class TwoAxisJoystickView extends React.Component {
 
                             this.margin = margin;
 
-                            const x = ((-512 + Number(pin1Value)) / 512) * this.margin;
-                            const y = ((-512 + Number(pin2Value)) / 512) * this.margin * -1;
+                            const x = ((-this.getMiddleX() + Number(pin1Value)) / this.getMiddleX()) * this.margin;
+                            const y = ((-this.getMiddleY() + Number(pin2Value)) / this.getMiddleY()) * this.margin * -1;
 
                             return (
                                 <div

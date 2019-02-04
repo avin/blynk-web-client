@@ -16,8 +16,7 @@ export default class DataStreamsChart extends React.Component {
         height: PropTypes.number.isRequired,
         controlBlockRef: PropTypes.instanceOf(Element),
         legendBlockRef: PropTypes.instanceOf(Element),
-        dataStreams: PropTypes.oneOfType([PropTypes.instanceOf(Array), PropTypes.instanceOf(Immutable.Iterable)])
-            .isRequired,
+        dataStreams: PropTypes.oneOfType([PropTypes.instanceOf(Array), PropTypes.instanceOf(Immutable.Iterable)]),
         dataStreamsHistory: PropTypes.oneOfType([PropTypes.instanceOf(Array), PropTypes.instanceOf(Immutable.Iterable)])
             .isRequired,
     };
@@ -27,15 +26,9 @@ export default class DataStreamsChart extends React.Component {
     lastChartTime = 0;
 
     drawChart() {
-        const {
-            width,
-            dataStreamsHistory,
-            height,
-            controlBlockRef,
-            legendBlockRef,
-            dataStreams,
-            showXAxis,
-        } = this.props;
+        const { width, dataStreamsHistory, height, controlBlockRef, legendBlockRef, showXAxis } = this.props;
+
+        const dataStreams = this.props.dataStreams || new Immutable.List();
 
         const margin = 3;
         const tipTimeWidth = 125;

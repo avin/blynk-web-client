@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Spinner } from '@blueprintjs/core';
 import SizeMe from '@avinlab/react-size-me';
+import * as Immutable from 'immutable';
 import { getPinHistory } from '../../../../../../redux/modules/blynk/actions';
 import { widgetDataStreamsHistorySelector } from '../../../../../../redux/selectors';
 import styles from './styles.module.scss';
@@ -16,7 +17,7 @@ export class EnhancedGraphView extends React.Component {
     async getHistory() {
         const { widget, getPinHistory } = this.props;
 
-        for (const dataStream of widget.get('dataStreams')) {
+        for (const dataStream of widget.get('dataStreams', new Immutable.List())) {
             const pinId = dataStream.getIn(['pin', 'pinId']);
             await getPinHistory(pinId);
         }

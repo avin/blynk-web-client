@@ -1,4 +1,5 @@
 import createCachedSelector from 're-reselect';
+import * as Immutable from 'immutable';
 
 export const pinValueSelector = (state, pinId) => state.blynk.getIn(['pins', pinId]);
 
@@ -7,7 +8,7 @@ export const widgetDataStreamsHistorySelector = createCachedSelector(
     state => state.blynk.get('pinsHistory'),
     (widget, pinsHistory) => {
         const dataStreamsHistory = [];
-        widget.get('dataStreams').forEach(dataStream => {
+        widget.get('dataStreams', new Immutable.List()).forEach(dataStream => {
             const pinId = dataStream.getIn(['pin', 'pinId']);
             dataStreamsHistory.push(pinsHistory.get(pinId));
         });

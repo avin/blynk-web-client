@@ -22,7 +22,7 @@ export class GaugeView extends React.Component {
                                     height={height}
                                     min={widget.get('min')}
                                     max={widget.get('max')}
-                                    value={Number(value)}
+                                    value={Number(value) || 0}
                                     valueFormatting={widget.get('valueFormatting')}
                                 />
                             )

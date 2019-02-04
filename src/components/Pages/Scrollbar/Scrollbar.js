@@ -9,7 +9,7 @@ export default class Scrollbar extends Component {
     };
 
     renderThumb = ({ className, style, ...props }) => {
-        return <div className={cn(className, styles.thumb)} {...props} />;
+        return <div className={cn(className, styles.thumb)} style={style} {...props} />;
     };
 
     render() {

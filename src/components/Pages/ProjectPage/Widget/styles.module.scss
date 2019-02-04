@@ -12,7 +12,12 @@
     flex-direction: column;
 }
 
-:global(.bp3-dark) .root{
+.tabsRoot {
+    padding: 0;
+    background-color: inherit !important;
+}
+
+:global(.bp3-dark) .root {
     background-color: $dark-gray3;
     border: 1px solid $dark-gray1;
     color: $gray5;

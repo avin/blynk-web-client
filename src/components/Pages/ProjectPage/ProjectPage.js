@@ -55,10 +55,15 @@ export class ProjectPage extends React.Component {
     }
 
     renderWidgets() {
-        const { project } = this.props;
+        const { project, activeTabId } = this.props;
 
         const widgets = [];
-        project.get('widgets').map(widget => widgets.push(<Widget key={widget.get('id')} widget={widget} />));
+        project.get('widgets').forEach(widget => {
+            const tabId = widget.get('tabId');
+            if (tabId === activeTabId || widget.get('type') === 'TABS') {
+                widgets.push(<Widget key={widget.get('id')} widget={widget} />);
+            }
+        });
         return widgets;
     }
 
@@ -111,6 +116,7 @@ function mapStateToProps(state, ownProps) {
         serverHost: state.blynk.get('serverHost'),
         serverPort: state.blynk.get('serverPort'),
         connectionMode: state.blynk.get('connectionMode'),
+        activeTabId: state.blynk.get('activeTabId'),
 
         project: state.blynk.get('project'),
     };

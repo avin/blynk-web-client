@@ -1,0 +1,28 @@
+@import 'src/styles/variables.scss';
+
+.tabsContainer {
+    height: 100%;
+}
+
+.tab {
+    padding: 10px 20px 5px 20px;
+    white-space: nowrap;
+    cursor: pointer;
+
+    display: inline;
+    margin-right: 5px;
+}
+
+.tabsInner{
+    margin-bottom: 5px;
+}
+
+.activeTab {
+    border-bottom: 3px solid $blue5;
+    font-weight: bold;
+    color: $blue5;
+}
+
+.tabList{
+    padding: 0 20px;
+}

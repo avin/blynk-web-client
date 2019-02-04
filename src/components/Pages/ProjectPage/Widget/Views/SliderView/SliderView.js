@@ -28,12 +28,13 @@ export class SliderView extends React.Component {
     render() {
         const { widget, value, vertical } = this.props;
 
+        const sliderValue = Math.max(Math.min(Number(value), widget.get('max')), widget.get('min'));
         return (
             <>
                 <WidgetLabel title={widget.get('label') || (!vertical && 'Slider')} information={value} />
                 <div className={styles.sliderContainer}>
                     <Slider
-                        value={Number(value)}
+                        value={sliderValue}
                         labelRenderer={false}
                         min={widget.get('min')}
                         max={widget.get('max')}

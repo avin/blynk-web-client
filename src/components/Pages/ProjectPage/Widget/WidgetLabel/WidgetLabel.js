@@ -16,7 +16,7 @@ export default class WidgetLabel extends React.Component {
     render() {
         const { title, information, emptyHide } = this.props;
 
-        if (title === undefined && information === undefined && emptyHide) {
+        if (!title && !information && emptyHide) {
             return <div />;
         }
 

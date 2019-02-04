@@ -20,6 +20,7 @@ import TabsView from './Views/TabsView/TabsView';
 
 const WIDGET_VIEW_COMPONENTS = {
     BUTTON: ButtonView,
+    STYLED_BUTTON: ButtonView,
     SLIDER: SliderView,
     VERTICAL_SLIDER: VerticalSliderView,
     RGB: RgbView,

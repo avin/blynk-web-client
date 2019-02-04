@@ -25,6 +25,7 @@ Then copy content of `build` folder to your web-server.
 ### Ready widgets
 
 -   BUTTON
+-   STYLED_BUTTON
 -   SLIDER
 -   VERTICAL_SLIDER
 -   RGB
@@ -40,6 +41,7 @@ Then copy content of `build` folder to your web-server.
 -   STEP
 -   VERTICAL_STEP
 -   LED
+-   TABS
 
 ### Preview
 

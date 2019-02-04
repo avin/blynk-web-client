@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Button } from '@blueprintjs/core';
 import SizeMe from '@avinlab/react-size-me';
+import cn from 'clsx';
 import WidgetLabel from '../../WidgetLabel/WidgetLabel';
 import styles from './styles.module.scss';
 import { getWidgetPinAddress } from '../../../../../../utils/data';
@@ -49,25 +50,58 @@ export class ButtonView extends React.Component {
         }
     };
 
+    getButtonStyle({ width, height, isStyledButton }) {
+        const { widget } = this.props;
+
+        if (isStyledButton) {
+            let borderRadius;
+            switch (widget.get('edge')) {
+                case 'SHARP':
+                    borderRadius = 0;
+                    break;
+                case 'ROUNDED':
+                    borderRadius = 3;
+                    break;
+                case 'PILL':
+                    borderRadius = height / 2;
+                    break;
+                default:
+            }
+
+            return {
+                width,
+                height,
+                borderRadius,
+            };
+        }
+
+        return {
+            margin: 2,
+            width: (Math.min(width, height) * widget.get('width')) / 2 - 4,
+            height: Math.min(width, height) - 4,
+        };
+    }
+
     render() {
         const { widget, value } = this.props;
 
+        const isStyledButton = widget.get('type') === 'STYLED_BUTTON';
+
         return (
             <>
-                <WidgetLabel title={widget.get('label') || 'Button'} />
+                <WidgetLabel title={widget.get('label') || (isStyledButton ? '' : 'Button')} />
                 <div className={styles.buttonContainer}>
                     <SizeMe className={styles.sizeContainer}>
                         {({ width, height }) => (
                             <Button
-                                className={styles.button}
+                                className={cn({
+                                    [styles.button]: !isStyledButton,
+                                    [styles.styledButton]: isStyledButton,
+                                })}
                                 active={!!Number(value)}
                                 onMouseDown={this.handleMouseDown}
                                 onMouseUp={this.handleMouseUp}
-                                style={{
-                                    margin: 2,
-                                    width: (Math.min(width, height) * widget.get('width')) / 2 - 4,
-                                    height: Math.min(width, height) - 4,
-                                }}
+                                style={this.getButtonStyle({ width, height, isStyledButton })}
                             >
                                 {this.renderButtonLabel()}
                             </Button>

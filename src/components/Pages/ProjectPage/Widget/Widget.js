@@ -48,8 +48,8 @@ export class Widget extends React.Component {
     render() {
         const { widget } = this.props;
 
-        const sizeHeightFactor = 60;
-        const sizeWidthFactor = 70;
+        const sizeHeightFactor = 70;
+        const sizeWidthFactor = 60;
         const margin = 1;
 
         return (

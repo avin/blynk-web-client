@@ -19,12 +19,23 @@ export class ButtonView extends React.Component {
     }
 
     handleMouseDown = () => {
-        const { widget } = this.props;
+        const { widget, value } = this.props;
 
         const pin = getWidgetPinAddress(widget);
 
         if (pin !== -1) {
-            blynkWSClient.sendWritePin(pin, 1);
+            if (widget.get('pushMode')) {
+                // If push mode
+                blynkWSClient.sendWritePin(pin, widget.get('max'));
+            } else {
+                // If switch mode
+                // eslint-disable-next-line no-lonely-if
+                if (String(value) === String(widget.get('max'))) {
+                    blynkWSClient.sendWritePin(pin, widget.get('min'));
+                } else {
+                    blynkWSClient.sendWritePin(pin, widget.get('max'));
+                }
+            }
         }
     };
 
@@ -34,7 +45,7 @@ export class ButtonView extends React.Component {
         const pin = getWidgetPinAddress(widget);
 
         if (pin !== -1 && widget.get('pushMode')) {
-            blynkWSClient.sendWritePin(pin, 0);
+            blynkWSClient.sendWritePin(pin, widget.get('min'));
         }
     };
 
@@ -54,7 +65,7 @@ export class ButtonView extends React.Component {
                                 onMouseUp={this.handleMouseUp}
                                 style={{
                                     margin: 2,
-                                    width: Math.min(width, height) - 4,
+                                    width: (Math.min(width, height) * widget.get('width')) / 2 - 4,
                                     height: Math.min(width, height) - 4,
                                 }}
                             >

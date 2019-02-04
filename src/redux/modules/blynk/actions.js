@@ -2,7 +2,14 @@ import request from 'superagent';
 import * as Immutable from 'immutable';
 import pako from 'pako';
 import * as d3 from 'd3';
-import { SET_CONNECTION_PARAMS, SET_PIN_VALUE, SET_PROJECT, SET_PIN_HISTORY, SET_TOKEN } from './actionTypes';
+import {
+    SET_CONNECTION_PARAMS,
+    SET_PIN_VALUE,
+    SET_PROJECT,
+    SET_PIN_HISTORY,
+    LOGOUT,
+    SET_ACTIVE_TAB_ID,
+} from './actionTypes';
 import { listToMap } from '../../../utils/immutable';
 import blynkWSClient from '../../../common/blynkWSClient';
 import { getHttpBlynkUrl } from '../../../utils/connection';
@@ -36,8 +43,7 @@ export function logout() {
     localStorage.setItem('blynk-web-client:token', '');
 
     return {
-        type: SET_TOKEN,
-        token: '',
+        type: LOGOUT,
     };
 }
 
@@ -92,6 +98,11 @@ export function setPinValue(pin, value) {
     };
 }
 
+/**
+ * Load pin history from server
+ * @param pin
+ * @returns {Function}
+ */
 export function getPinHistory(pin) {
     return async (dispatch, getState) => {
         const { token, serverHost, serverPort, connectionMode } = getState().blynk.toObject();
@@ -123,5 +134,17 @@ export function getPinHistory(pin) {
                 reader.readAsArrayBuffer(data);
             });
         await processData(res.body);
+    };
+}
+
+/**
+ * Set active tab
+ * @param tabId
+ * @returns {{tabId: *, type: string}}
+ */
+export function setActiveTabId(tabId) {
+    return {
+        type: SET_ACTIVE_TAB_ID,
+        tabId,
     };
 }

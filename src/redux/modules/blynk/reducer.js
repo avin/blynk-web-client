@@ -1,5 +1,12 @@
 import * as Immutable from 'immutable';
-import { SET_CONNECTION_PARAMS, SET_PROJECT, SET_PIN_VALUE, SET_PIN_HISTORY, SET_TOKEN } from './actionTypes';
+import {
+    SET_CONNECTION_PARAMS,
+    SET_PROJECT,
+    SET_PIN_VALUE,
+    SET_PIN_HISTORY,
+    LOGOUT,
+    SET_ACTIVE_TAB_ID,
+} from './actionTypes';
 import { getWidgetPinAddress } from '../../../utils/data';
 
 const defaultToken = localStorage.getItem('blynk-web-client:token');
@@ -12,6 +19,8 @@ const initialState = Immutable.fromJS({
     serverHost: defaultServerHost,
     serverPort: defaultPort,
     connectionMode: defaultConnectionMode,
+
+    activeTabId: 0,
 
     project: null,
     pins: {},
@@ -29,9 +38,18 @@ export default function reducer(state = initialState, action = {}) {
                 .set('serverPort', serverPort)
                 .set('connectionMode', connectionMode);
         }
-        case SET_TOKEN: {
-            const { token } = action;
-            return state.set('token', token);
+        case LOGOUT: {
+            return state
+                .set('token', '')
+                .set('activeTabId', 0)
+                .set('project', null)
+                .set('pins', new Immutable.Map())
+                .set('pinsHistory', new Immutable.Map())
+                .set('pinsWriteHistory', new Immutable.Map());
+        }
+        case SET_ACTIVE_TAB_ID: {
+            const { tabId } = action;
+            return state.set('activeTabId', tabId);
         }
         case SET_PROJECT: {
             let { project } = action;

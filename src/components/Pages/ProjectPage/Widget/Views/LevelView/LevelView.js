@@ -13,7 +13,7 @@ export class LevelView extends React.Component {
 
         return (
             <>
-                <WidgetLabel title={widget.get('label') || (isVertical ? '' : 'Gauge')} information={value} />
+                <WidgetLabel title={widget.get('label') || (isVertical ? '' : 'Level')} information={value} />
                 <div className={styles.chart}>
                     <SizeMe>
                         {({ width, height }) =>

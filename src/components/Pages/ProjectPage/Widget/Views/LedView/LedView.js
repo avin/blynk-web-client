@@ -24,7 +24,7 @@ export class LedView extends React.Component {
 function mapStateToProps(state, ownProps) {
     const pinId = ownProps.widget.get('pinId');
     return {
-        value: pinValueSelector(state, pinId),
+        value: pinValueSelector(state, pinId) || 0,
     };
 }
 

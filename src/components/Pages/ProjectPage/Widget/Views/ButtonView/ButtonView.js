@@ -98,7 +98,7 @@ export class ButtonView extends React.Component {
                                     [styles.button]: !isStyledButton,
                                     [styles.styledButton]: isStyledButton,
                                 })}
-                                active={!!Number(value)}
+                                active={String(value) === String(widget.get('max'))}
                                 onMouseDown={this.handleMouseDown}
                                 onMouseUp={this.handleMouseUp}
                                 style={this.getButtonStyle({ width, height, isStyledButton })}

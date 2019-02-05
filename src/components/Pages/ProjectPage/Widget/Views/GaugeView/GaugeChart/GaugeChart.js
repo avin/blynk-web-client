@@ -5,6 +5,7 @@ import * as d3 from 'd3';
 import cn from 'clsx';
 import escape from 'lodash/escape';
 import styles from './styles.module.scss';
+import { decodeBlynkColor } from '../../../../../../../utils/color';
 
 export class GaugeChart extends React.Component {
     static propTypes = {
@@ -13,10 +14,11 @@ export class GaugeChart extends React.Component {
         value: PropTypes.number.isRequired,
         width: PropTypes.number.isRequired,
         height: PropTypes.number.isRequired,
+        color: PropTypes.number,
     };
 
     renderChart() {
-        const { width, height, min, max } = this.props;
+        const { width, height, min, max, color } = this.props;
 
         const svg = d3
             .select(this.containerRef)
@@ -26,8 +28,8 @@ export class GaugeChart extends React.Component {
 
         const chart = svg.append('g').attr('transform', `translate(${width / 2}, ${height / 1.5})`);
 
-        const radius = Math.min(width, height) / 1.5;
         const thickness = 20;
+        const radius = Math.min(width, height) / 1.5 - thickness / 2;
 
         const arc = d3.arc().cornerRadius(thickness / 2);
 
@@ -43,7 +45,10 @@ export class GaugeChart extends React.Component {
                     endAngle: Math.PI / 1.5,
                 }),
             );
-        chart.append('path').attr('class', cn('frontLine', styles.frontLine));
+        chart
+            .append('path')
+            .attr('class', cn('frontLine', styles.frontLine))
+            .attr('fill', decodeBlynkColor(color));
         chart
             .append('foreignObject')
             .attr('width', radius)
@@ -51,7 +56,8 @@ export class GaugeChart extends React.Component {
             .attr('x', -radius / 2)
             .attr('y', -25)
             .append('xhtml:div')
-            .attr('class', cn('value', styles.value));
+            .attr('class', cn('value', styles.value))
+            .style('color', decodeBlynkColor(color));
 
         chart
             .append('text')

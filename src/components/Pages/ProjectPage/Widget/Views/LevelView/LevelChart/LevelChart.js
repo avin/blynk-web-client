@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import * as d3 from 'd3';
 import cn from 'clsx';
 import styles from './styles.module.scss';
+import { decodeBlynkColor } from '../../../../../../../utils/color';
 
 export class LevelChart extends React.Component {
     static propTypes = {
@@ -14,10 +15,11 @@ export class LevelChart extends React.Component {
         height: PropTypes.number.isRequired,
         vertical: PropTypes.bool,
         flipAxis: PropTypes.bool,
+        color: PropTypes.number,
     };
 
     renderChart() {
-        const { width, height } = this.props;
+        const { width, height, color } = this.props;
 
         const svg = d3
             .select(this.containerRef)
@@ -42,7 +44,8 @@ export class LevelChart extends React.Component {
             .attr('rx', 3)
             .attr('ry', 3)
             .attr('x', 0)
-            .attr('y', 0);
+            .attr('y', 0)
+            .attr('fill', decodeBlynkColor(color));
 
         this.redraw = () => {
             const { min, max, value, height, width, vertical, flipAxis } = this.props;

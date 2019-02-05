@@ -27,6 +27,7 @@ export class LevelView extends React.Component {
                                     valueFormatting={widget.get('valueFormatting')}
                                     vertical={isVertical}
                                     flipAxis={widget.get('isAxisFlipOn')}
+                                    color={widget.get('color')}
                                 />
                             )
                         }

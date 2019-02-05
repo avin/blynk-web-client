@@ -1,12 +1,13 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import SizeMe from '@avinlab/react-size-me';
-import { Button, Intent } from '@blueprintjs/core';
+import { Button } from '@blueprintjs/core';
 import { DraggableCore } from 'react-draggable';
 import WidgetLabel from '../../WidgetLabel/WidgetLabel';
 import styles from './styles.module.scss';
 import { pinValueSelector } from '../../../../../../redux/selectors';
 import blynkWSClient from '../../../../../../common/blynkWSClient';
+import { decodeBlynkColor } from '../../../../../../utils/color';
 
 export class TwoAxisJoystickView extends React.Component {
     handleStartDrag = () => {};
@@ -108,7 +109,6 @@ export class TwoAxisJoystickView extends React.Component {
                                         onStop={this.handleStop}
                                     >
                                         <Button
-                                            intent={Intent.PRIMARY}
                                             className={styles.stick}
                                             style={{
                                                 width: stickSize + moreSize * 2,
@@ -116,6 +116,8 @@ export class TwoAxisJoystickView extends React.Component {
                                                 left: margin - moreSize,
                                                 top: margin - moreSize,
                                                 transform: `translate(${x}px, ${y}px)`,
+                                                backgroundColor: decodeBlynkColor(widget.get('color')),
+                                                border: `5px solid white`,
                                             }}
                                         />
                                     </DraggableCore>

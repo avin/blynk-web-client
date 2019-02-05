@@ -41,6 +41,13 @@
     transform: translate(6px, 4px);
     font-size: 12px;
     fill: $light-gray5;
+
+    paint-order: stroke;
+    stroke: $dark-gray3;
+    stroke-width: 3px;
+    stroke-linecap: butt;
+    stroke-linejoin: miter;
+    font-weight: 400;
 }
 
 .tipTime {

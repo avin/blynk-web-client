@@ -8,6 +8,7 @@ import chroma from 'chroma-js';
 import styles from './styles.module.scss';
 import ChartControl from './ChartControl/ChartControl';
 import ChartLegend from './ChartLegend/ChartLegend';
+import { decodeBlynkColor } from '../../../../../../../utils/color';
 
 export default class DataStreamsChart extends React.Component {
     static propTypes = {
@@ -44,7 +45,11 @@ export default class DataStreamsChart extends React.Component {
 
         const chart = svg.append('g').attr('transform', `translate(0,${margin - showXAxisMargin})`);
 
-        const colors = d3.scaleOrdinal(d3.schemeCategory10);
+        const colorsArr = [];
+        dataStreams.forEach(dataStream => {
+            colorsArr.push(decodeBlynkColor(dataStream.get('color')));
+        });
+        const colors = d3.scaleOrdinal(colorsArr);
 
         let maxTime = Number.MAX_SAFE_INTEGER * -1;
         let minTime = Number.MAX_SAFE_INTEGER;

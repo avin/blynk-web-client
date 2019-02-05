@@ -45,9 +45,10 @@ export class NumericalDisplayView extends React.Component {
 }
 
 function mapStateToProps(state, ownProps) {
+    const deviceId = ownProps.widget.get('deviceId');
     const pinId = ownProps.widget.get('pinId');
     return {
-        value: pinValueSelector(state, pinId),
+        value: pinValueSelector(state, deviceId, pinId),
     };
 }
 

@@ -3,55 +3,19 @@ import { connect } from 'react-redux';
 import cn from 'clsx';
 import { Button } from '@blueprintjs/core';
 import SizeMe from '@avinlab/react-size-me';
-import { getProject, logout, setPinValue } from '../../../redux/modules/blynk/actions';
+import { getProject, logout } from '../../../redux/modules/blynk/actions';
 import styles from './styles.module.scss';
 import Widget from './Widget/Widget';
-import blynkWSClient from '../../../common/blynkWSClient';
 import Scrollbar from '../Scrollbar/Scrollbar';
 
 export class ProjectPage extends React.Component {
-    async getProject() {
-        const { project, getProject, history } = this.props;
-        if (!project) {
-            try {
-                await getProject();
-            } catch (e) {
-                history.push('/connection');
-            }
+    async componentDidMount() {
+        const { history, getProject } = this.props;
+        try {
+            await getProject();
+        } catch (e) {
+            history.push('/connection');
         }
-    }
-
-    initWSClient = () => {
-        const { token, serverHost, serverPort, connectionMode } = this.props;
-
-        // Connect to blynk ws server
-        blynkWSClient.init({
-            token,
-            serverHost,
-            serverPort,
-            connectionMode,
-        });
-
-        blynkWSClient.addEventListener('write-pin', this.handleWritePin);
-    };
-
-    componentWillUnmount() {
-        blynkWSClient.removeEventListener('write-pin', this.handleWritePin);
-    }
-
-    handleWritePin = e => {
-        const { setPinValue } = this.props;
-        const { pin, value } = e.detail;
-
-        setPinValue(pin, value);
-    };
-
-    componentDidMount() {
-        const { token, history } = this.props;
-        if (!token) {
-            return history.push('/connection');
-        }
-        this.getProject().then(this.initWSClient);
     }
 
     renderWidgets() {
@@ -67,7 +31,7 @@ export class ProjectPage extends React.Component {
         return widgets;
     }
 
-    handleCloseConnection = () => {
+    handleLogout = () => {
         const { history, logout } = this.props;
         logout();
         history.push('/connection');
@@ -88,7 +52,7 @@ export class ProjectPage extends React.Component {
                     <div className={styles.headerInner}>
                         <div className={styles.headerTitle}>{project.get('name')}</div>
                         <div>
-                            <Button icon="log-out" onClick={this.handleCloseConnection} />
+                            <Button icon="log-out" onClick={this.handleLogout} />
                         </div>
                     </div>
                 </div>
@@ -112,12 +76,7 @@ export class ProjectPage extends React.Component {
 
 function mapStateToProps(state, ownProps) {
     return {
-        token: state.blynk.get('token'),
-        serverHost: state.blynk.get('serverHost'),
-        serverPort: state.blynk.get('serverPort'),
-        connectionMode: state.blynk.get('connectionMode'),
         activeTabId: state.blynk.get('activeTabId'),
-
         project: state.blynk.get('project'),
     };
 }
@@ -125,8 +84,7 @@ function mapStateToProps(state, ownProps) {
 export default connect(
     mapStateToProps,
     {
-        getProject,
-        setPinValue,
         logout,
+        getProject,
     },
 )(ProjectPage);

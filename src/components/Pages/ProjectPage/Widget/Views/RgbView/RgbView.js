@@ -16,13 +16,13 @@ export class RgbView extends React.Component {
         const pin3Id = widget.getIn(['pins', 2, 'pinId']);
 
         if (pin1Id !== -1) {
-            blynkWSClient.sendWritePin(pin1Id, color.rgb.r);
+            blynkWSClient(widget.get('deviceId')).sendWritePin(pin1Id, color.rgb.r);
         }
         if (pin2Id !== -1) {
-            blynkWSClient.sendWritePin(pin2Id, color.rgb.g);
+            blynkWSClient(widget.get('deviceId')).sendWritePin(pin2Id, color.rgb.g);
         }
         if (pin3Id !== -1) {
-            blynkWSClient.sendWritePin(pin3Id, color.rgb.b);
+            blynkWSClient(widget.get('deviceId')).sendWritePin(pin3Id, color.rgb.b);
         }
     };
 
@@ -43,14 +43,15 @@ export class RgbView extends React.Component {
 }
 
 function mapStateToProps(state, ownProps) {
+    const deviceId = ownProps.widget.get('deviceId');
     const pin1Id = ownProps.widget.getIn(['pins', 0, 'pinId']);
     const pin2Id = ownProps.widget.getIn(['pins', 1, 'pinId']);
     const pin3Id = ownProps.widget.getIn(['pins', 2, 'pinId']);
 
     return {
-        pin1Value: pinValueSelector(state, pin1Id),
-        pin2Value: pinValueSelector(state, pin2Id),
-        pin3Value: pinValueSelector(state, pin3Id),
+        pin1Value: pinValueSelector(state, deviceId, pin1Id),
+        pin2Value: pinValueSelector(state, deviceId, pin2Id),
+        pin3Value: pinValueSelector(state, deviceId, pin3Id),
     };
 }
 

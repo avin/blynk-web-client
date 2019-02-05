@@ -37,11 +37,12 @@ export class LcdDisplayView extends React.Component {
 }
 
 function mapStateToProps(state, ownProps) {
+    const deviceId = ownProps.widget.get('deviceId');
     const pin1Id = ownProps.widget.getIn(['pins', 0, 'pinId']);
     const pin2Id = ownProps.widget.getIn(['pins', 1, 'pinId']);
     return {
-        value1: pinValueSelector(state, pin1Id),
-        value2: pinValueSelector(state, pin2Id),
+        value1: pinValueSelector(state, deviceId, pin1Id),
+        value2: pinValueSelector(state, deviceId, pin2Id),
     };
 }
 

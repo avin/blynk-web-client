@@ -2,7 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Form, Field } from 'react-final-form';
 import cn from 'clsx';
-import { Button, FormGroup, HTMLSelect, InputGroup, Intent } from '@blueprintjs/core';
+import { Button, FormGroup, HTMLSelect, InputGroup, Intent, TextArea } from '@blueprintjs/core';
+import * as Immutable from 'immutable';
 import { setConnectionParams, testConnection } from '../../../redux/modules/blynk/actions';
 import styles from './styles.module.scss';
 import { required } from '../../../utils/validation';
@@ -13,6 +14,13 @@ const ErrorString = meta => (meta.error && meta.touched ? <div className={styles
 const InputGroupField = ({ input, meta, ...props }) => (
     <>
         <InputGroup {...{ ...input, ...props }} />
+        <ErrorString {...meta} />
+    </>
+);
+
+const TextAreaField = ({ input, meta, ...props }) => (
+    <>
+        <TextArea {...{ ...input, ...props }} />
         <ErrorString {...meta} />
     </>
 );
@@ -29,7 +37,7 @@ export class ConnectionPage extends React.Component {
         const { setConnectionParams, history, testConnection } = this.props;
 
         setConnectionParams({
-            token: params.token,
+            tokens: Immutable.fromJS(params.tokens.split(/[\r]?\n/)),
             serverHost: params.serverHost,
             serverPort: params.serverPort,
             connectionMode: params.connectionMode,
@@ -48,7 +56,7 @@ export class ConnectionPage extends React.Component {
 
     render() {
         const { busy, connectionError } = this.state;
-        const { token, serverHost, serverPort, connectionMode } = this.props;
+        const { tokens, serverHost, serverPort, connectionMode } = this.props;
 
         return (
             <div className={cn('bp3-dark', styles.main)}>
@@ -56,7 +64,7 @@ export class ConnectionPage extends React.Component {
                 <Form
                     onSubmit={this.handleSubmit}
                     initialValues={{
-                        token,
+                        tokens: tokens.join('\n'),
                         serverHost,
                         serverPort,
                         connectionMode,
@@ -64,8 +72,18 @@ export class ConnectionPage extends React.Component {
                     render={({ handleSubmit }) => (
                         <form onSubmit={handleSubmit} className={cn('bp3-card', styles.form)}>
                             <div className={styles.title}>Blynk Web-Client</div>
-                            <FormGroup label="Auth token" labelFor="token-input">
-                                <Field name="token" id="token-input" component={InputGroupField} validate={required} />
+                            <FormGroup
+                                label="Project's authentication tokens"
+                                labelFor="tokens-input"
+                                helperText="Paste here all auth tokens of your project"
+                            >
+                                <Field
+                                    name="tokens"
+                                    id="tokens-input"
+                                    component={TextAreaField}
+                                    validate={required}
+                                    className={styles.tokensInput}
+                                />
                             </FormGroup>
 
                             <FormGroup label="Connection mode" labelFor="connectionMode-input">
@@ -124,7 +142,7 @@ export class ConnectionPage extends React.Component {
 
 function mapStateToProps(state, ownProps) {
     return {
-        token: state.blynk.get('token'),
+        tokens: state.blynk.get('tokens'),
         serverHost: state.blynk.get('serverHost'),
         serverPort: state.blynk.get('serverPort'),
         connectionMode: state.blynk.get('connectionMode'),

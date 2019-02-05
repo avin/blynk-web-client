@@ -23,7 +23,7 @@ export class TerminalView extends React.Component {
         const pin = getWidgetPinAddress(widget);
         if (pin !== -1) {
             this.lastOwnChange = true;
-            blynkWSClient.sendWritePin(pin, inputValue);
+            blynkWSClient(widget.get('deviceId')).sendWritePin(pin, inputValue);
         }
 
         this.setState({ inputValue: '' });
@@ -107,11 +107,12 @@ export class TerminalView extends React.Component {
 }
 
 function mapStateToProps(state, ownProps) {
+    const deviceId = ownProps.widget.get('deviceId');
     const pinId = ownProps.widget.get('pinId');
 
     return {
-        value: pinValueSelector(state, pinId),
-        pinWriteHistory: state.blynk.getIn(['pinsWriteHistory', pinId]),
+        value: pinValueSelector(state, deviceId, pinId),
+        pinWriteHistory: state.blynk.getIn(['devices', deviceId, 'pinsWriteHistory', pinId]),
     };
 }
 

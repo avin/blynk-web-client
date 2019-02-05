@@ -7,15 +7,14 @@ import {
     LOGOUT,
     SET_ACTIVE_TAB_ID,
 } from './actionTypes';
-import { getWidgetPinAddress } from '../../../utils/data';
 
-const defaultToken = localStorage.getItem('blynk-web-client:token');
+const defaultTokens = (localStorage.getItem('blynk-web-client:tokens') || '').split(',');
 const defaultServerHost = localStorage.getItem('blynk-web-client:serverHost') || 'blynk-cloud.com';
 const defaultPort = Number(localStorage.getItem('blynk-web-client:serverPort')) || 8080;
 const defaultConnectionMode = localStorage.getItem('blynk-web-client:connectionMode') || 'no-ssl';
 
 const initialState = Immutable.fromJS({
-    token: defaultToken,
+    tokens: defaultTokens,
     serverHost: defaultServerHost,
     serverPort: defaultPort,
     connectionMode: defaultConnectionMode,
@@ -23,94 +22,60 @@ const initialState = Immutable.fromJS({
     activeTabId: 0,
 
     project: null,
-    pins: {},
-    pinsHistory: {},
-    pinsWriteHistory: {},
+
+    devices: {},
 });
 
 export default function reducer(state = initialState, action = {}) {
     switch (action.type) {
         case SET_CONNECTION_PARAMS: {
-            const { token, serverHost, serverPort, connectionMode } = action;
+            const { tokens, serverHost, serverPort, connectionMode } = action;
             return state
-                .set('token', token)
+                .set('tokens', tokens)
                 .set('serverHost', serverHost)
                 .set('serverPort', serverPort)
                 .set('connectionMode', connectionMode);
         }
         case LOGOUT: {
             return state
-                .set('token', '')
+                .set('tokens', new Immutable.List())
                 .set('activeTabId', 0)
                 .set('project', null)
                 .set('pins', new Immutable.Map())
                 .set('pinsHistory', new Immutable.Map())
-                .set('pinsWriteHistory', new Immutable.Map());
+                .set('pinsWriteHistory', new Immutable.Map())
+                .set('devices', new Immutable.Map());
         }
         case SET_ACTIVE_TAB_ID: {
             const { tabId } = action;
             return state.set('activeTabId', tabId);
         }
         case SET_PROJECT: {
-            let { project } = action;
+            const { project, devices } = action;
 
-            let widgets = project.get('widgets');
-            let pins = state.get('pins');
-
-            const processWidgetPin = widgetPinBlock => {
-                const pin = widgetPinBlock.get('pin', -1);
-                const value = widgetPinBlock.get('value');
-                if (pin !== -1) {
-                    const pinId = getWidgetPinAddress(widgetPinBlock);
-                    widgetPinBlock = widgetPinBlock.set('pinId', pinId);
-
-                    if (value !== undefined) {
-                        pins = pins.set(pinId, value);
-                    }
-                }
-                return widgetPinBlock;
-            };
-
-            // Prepare pin ids and get exist pins values
-            widgets = widgets.map(widget => {
-                widget = processWidgetPin(widget);
-
-                let widgetPins = widget.get('pins');
-                if (widgetPins) {
-                    widgetPins = widgetPins.map(widgetPinBlock => {
-                        return processWidgetPin(widgetPinBlock);
-                    });
-                    widget = widget.set('pins', widgetPins);
-                }
-
-                let widgetDataStreams = widget.get('dataStreams');
-                if (widgetDataStreams) {
-                    widgetDataStreams = widgetDataStreams.map(widgetDataStream => {
-                        return widgetDataStream.set('pin', processWidgetPin(widgetDataStream.get('pin')));
-                    });
-                    widget = widget.set('dataStreams', widgetDataStreams);
-                }
-
-                return widget;
-            });
-
-            project = project.set('widgets', widgets);
-
-            return state.set('project', project).set('pins', pins);
+            return state.set('project', project).set('devices', devices);
         }
         case SET_PIN_VALUE: {
-            const { pin, value } = action;
+            const { deviceId, pin, value } = action;
+
+            let device = state.getIn(['devices', deviceId]);
+
+            device = device.setIn(['pins', pin], value);
 
             // Write value to pinsWriteHistory
-            let pinWriteHistory = state.getIn(['pinsWriteHistory', pin], new Immutable.List());
+            let pinWriteHistory = device.getIn(['pinsWriteHistory', pin], new Immutable.List());
             pinWriteHistory = pinWriteHistory.push(value);
-            state = state.setIn(['pinsWriteHistory', pin], pinWriteHistory);
+            device = device.setIn(['pinsWriteHistory', pin], pinWriteHistory);
 
-            return state.setIn(['pins', pin], value);
+            return state.setIn(['devices', deviceId], device);
         }
         case SET_PIN_HISTORY: {
-            const { pin, history } = action;
-            return state.setIn(['pinsHistory', pin], history);
+            const { deviceId, pin, history } = action;
+
+            let device = state.getIn(['devices', deviceId]);
+            device = device.setIn(['pinsHistory', pin], history);
+
+            return state.setIn(['devices', deviceId], device);
         }
         default:
             return state;

@@ -34,10 +34,16 @@ export class TwoAxisJoystickView extends React.Component {
         const pin2Id = widget.getIn(['pins', 1, 'pinId']);
 
         if (pin1Id !== -1) {
-            blynkWSClient.sendWritePin(pin1Id, Math.floor(this.getMiddleX() + (rX / this.margin) * this.getMiddleX()));
+            blynkWSClient(widget.get('deviceId')).sendWritePin(
+                pin1Id,
+                Math.floor(this.getMiddleX() + (rX / this.margin) * this.getMiddleX()),
+            );
         }
         if (pin2Id !== -1) {
-            blynkWSClient.sendWritePin(pin2Id, Math.floor(this.getMiddleY() - (rY / this.margin) * this.getMiddleY()));
+            blynkWSClient(widget.get('deviceId')).sendWritePin(
+                pin2Id,
+                Math.floor(this.getMiddleY() - (rY / this.margin) * this.getMiddleY()),
+            );
         }
     };
 
@@ -48,10 +54,10 @@ export class TwoAxisJoystickView extends React.Component {
         const pin2Id = widget.getIn(['pins', 1, 'pinId']);
 
         if (pin1Id !== -1) {
-            blynkWSClient.sendWritePin(pin1Id, this.getMiddleX());
+            blynkWSClient(widget.get('deviceId')).sendWritePin(pin1Id, this.getMiddleX());
         }
         if (pin2Id !== -1) {
-            blynkWSClient.sendWritePin(pin2Id, this.getMiddleY());
+            blynkWSClient(widget.get('deviceId')).sendWritePin(pin2Id, this.getMiddleY());
         }
     };
 
@@ -132,12 +138,13 @@ export class TwoAxisJoystickView extends React.Component {
 }
 
 function mapStateToProps(state, ownProps) {
+    const deviceId = ownProps.widget.get('deviceId');
     const pin1Id = ownProps.widget.getIn(['pins', 0, 'pinId']);
     const pin2Id = ownProps.widget.getIn(['pins', 1, 'pinId']);
 
     return {
-        pin1Value: pinValueSelector(state, pin1Id),
-        pin2Value: pinValueSelector(state, pin2Id),
+        pin1Value: pinValueSelector(state, deviceId, pin1Id),
+        pin2Value: pinValueSelector(state, deviceId, pin2Id),
     };
 }
 

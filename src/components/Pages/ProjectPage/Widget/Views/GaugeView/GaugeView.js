@@ -37,8 +37,9 @@ export class GaugeView extends React.Component {
 
 function mapStateToProps(state, ownProps) {
     const pinId = ownProps.widget.get('pinId');
+    const deviceId = ownProps.widget.get('deviceId');
     return {
-        value: pinValueSelector(state, pinId),
+        value: pinValueSelector(state, deviceId, pinId),
     };
 }
 

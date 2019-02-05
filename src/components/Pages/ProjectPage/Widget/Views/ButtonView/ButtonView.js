@@ -36,14 +36,14 @@ export class ButtonView extends React.Component {
         if (pin !== -1) {
             if (widget.get('pushMode')) {
                 // If push mode
-                blynkWSClient.sendWritePin(pin, widget.get('max'));
+                blynkWSClient(widget.get('deviceId')).sendWritePin(pin, widget.get('max'));
             } else {
                 // If switch mode
                 // eslint-disable-next-line no-lonely-if
                 if (String(value) === String(widget.get('max'))) {
-                    blynkWSClient.sendWritePin(pin, widget.get('min'));
+                    blynkWSClient(widget.get('deviceId')).sendWritePin(pin, widget.get('min'));
                 } else {
-                    blynkWSClient.sendWritePin(pin, widget.get('max'));
+                    blynkWSClient(widget.get('deviceId')).sendWritePin(pin, widget.get('max'));
                 }
             }
         }
@@ -59,7 +59,7 @@ export class ButtonView extends React.Component {
         const pin = getWidgetPinAddress(widget);
 
         if (pin !== -1 && widget.get('pushMode')) {
-            blynkWSClient.sendWritePin(pin, widget.get('min'));
+            blynkWSClient(widget.get('deviceId')).sendWritePin(pin, widget.get('min'));
         }
     };
 
@@ -147,8 +147,9 @@ export class ButtonView extends React.Component {
 
 function mapStateToProps(state, ownProps) {
     const pinId = ownProps.widget.get('pinId');
+    const deviceId = ownProps.widget.get('deviceId');
     return {
-        value: pinValueSelector(state, pinId),
+        value: pinValueSelector(state, deviceId, pinId),
     };
 }
 

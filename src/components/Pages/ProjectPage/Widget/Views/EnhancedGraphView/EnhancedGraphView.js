@@ -19,7 +19,7 @@ export class EnhancedGraphView extends React.Component {
 
         for (const dataStream of widget.get('dataStreams', new Immutable.List())) {
             const pinId = dataStream.getIn(['pin', 'pinId']);
-            await getPinHistory(pinId);
+            await getPinHistory({ deviceId: dataStream.get('targetId'), pin: pinId });
         }
 
         this.setState({

@@ -13,7 +13,7 @@ export class SliderView extends React.Component {
 
         const pin = getWidgetPinAddress(widget);
         const fakeUpdate = widget.get('sendOnReleaseOn');
-        blynkWSClient.sendWritePin(pin, value, fakeUpdate);
+        blynkWSClient(widget.get('deviceId')).sendWritePin(pin, value, fakeUpdate);
     };
 
     handleRelease = value => {
@@ -21,7 +21,7 @@ export class SliderView extends React.Component {
 
         if (widget.get('sendOnReleaseOn')) {
             const pin = getWidgetPinAddress(widget);
-            blynkWSClient.sendWritePin(pin, value);
+            blynkWSClient(widget.get('deviceId')).sendWritePin(pin, value);
         }
     };
 
@@ -49,9 +49,10 @@ export class SliderView extends React.Component {
 }
 
 function mapStateToProps(state, ownProps) {
+    const deviceId = ownProps.widget.get('deviceId');
     const pinId = ownProps.widget.get('pinId');
     return {
-        value: pinValueSelector(state, pinId),
+        value: pinValueSelector(state, deviceId, pinId),
     };
 }
 

@@ -64,7 +64,7 @@ export class StepView extends React.Component {
                 }
 
                 if (pin !== -1) {
-                    blynkWSClient.sendWritePin(pin, sendValue);
+                    blynkWSClient(widget.get('deviceId')).sendWritePin(pin, sendValue);
                 }
             },
             delay: 80,
@@ -129,9 +129,10 @@ export class StepView extends React.Component {
 }
 
 function mapStateToProps(state, ownProps) {
+    const deviceId = ownProps.widget.get('deviceId');
     const pinId = ownProps.widget.get('pinId');
     return {
-        value: pinValueSelector(state, pinId),
+        value: pinValueSelector(state, deviceId, pinId),
     };
 }
 

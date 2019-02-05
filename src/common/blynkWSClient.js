@@ -83,6 +83,7 @@ class BlynkWSClient extends EventTarget {
      * @param token
      * @param serverHost
      * @param serverPort
+     * @param connectionMode
      */
     init({ token, serverHost, serverPort, connectionMode }) {
         this.stop();
@@ -269,5 +270,17 @@ class BlynkWSClient extends EventTarget {
     }
 }
 
-const blynkWSClient = new BlynkWSClient();
-export default blynkWSClient;
+class BlynkWSMultiClient {
+    _clients = {};
+
+    getBlynkWSClient = deviceId => {
+        if (!this._clients[String(deviceId)]) {
+            this._clients[String(deviceId)] = new BlynkWSClient();
+        }
+        return this._clients[String(deviceId)];
+    };
+}
+
+const blynkWSMultiClient = new BlynkWSMultiClient();
+
+export default blynkWSMultiClient.getBlynkWSClient;

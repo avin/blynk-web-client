@@ -17,6 +17,7 @@ import LevelView from './Views/LevelView/LevelView';
 import StepView from './Views/StepView/StepView';
 import LedView from './Views/LedView/LedView';
 import TabsView from './Views/TabsView/TabsView';
+import EmptyView from './Views/EmptyView/EmptyView';
 
 const WIDGET_VIEW_COMPONENTS = {
     BUTTON: ButtonView,
@@ -37,6 +38,10 @@ const WIDGET_VIEW_COMPONENTS = {
     VERTICAL_STEP: StepView,
     LED: LedView,
     TABS: TabsView,
+    EMAIL: EmptyView,
+    NOTIFICATION: EmptyView,
+    TWITTER: EmptyView,
+    BRIDGE: EmptyView,
 };
 
 export class Widget extends React.Component {

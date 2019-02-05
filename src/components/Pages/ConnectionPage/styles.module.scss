@@ -10,7 +10,7 @@
     flex-direction: column;
 }
 
-.emptyFiller{
+.emptyFiller {
     height: 20px;
 }
 
@@ -60,4 +60,8 @@
     margin-top: 10px;
     text-align: center;
     color: $red5;
+}
+
+.tokensInput {
+    width: 100%;
 }

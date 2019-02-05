@@ -1,9 +1,14 @@
 .button {
     border-radius: 49px !important;
+    background-image: none !important;
+    box-shadow: none !important;
+    background-clip: border-box !important;
+    font-weight: 500;
 }
 
 .styledButton{
     width: 100%;
+    font-weight: 500;
 }
 
 .buttonContainer {

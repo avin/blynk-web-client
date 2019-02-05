@@ -8,12 +8,17 @@ import styles from './styles.module.scss';
 import { getWidgetPinAddress } from '../../../../../../utils/data';
 import blynkWSClient from '../../../../../../common/blynkWSClient';
 import { pinValueSelector } from '../../../../../../redux/selectors';
+import { decodeBlynkColor } from '../../../../../../utils/color';
 
 export class ButtonView extends React.Component {
-    renderButtonLabel() {
-        const { widget, value } = this.props;
+    state = {
+        pressed: false,
+    };
 
-        if (Number(value)) {
+    renderButtonLabel() {
+        const { widget } = this.props;
+
+        if (this.isButtonActive()) {
             return widget.get('onLabel', 'ON');
         }
         return widget.get('offLabel', 'OFF');
@@ -21,6 +26,10 @@ export class ButtonView extends React.Component {
 
     handleMouseDown = () => {
         const { widget, value } = this.props;
+
+        this.setState({
+            pressed: true,
+        });
 
         const pin = getWidgetPinAddress(widget);
 
@@ -43,6 +52,10 @@ export class ButtonView extends React.Component {
     handleMouseUp = () => {
         const { widget } = this.props;
 
+        this.setState({
+            pressed: false,
+        });
+
         const pin = getWidgetPinAddress(widget);
 
         if (pin !== -1 && widget.get('pushMode')) {
@@ -52,6 +65,8 @@ export class ButtonView extends React.Component {
 
     getButtonStyle({ width, height, isStyledButton }) {
         const { widget } = this.props;
+
+        const buttonActive = this.isButtonActive();
 
         if (isStyledButton) {
             let borderRadius;
@@ -72,6 +87,13 @@ export class ButtonView extends React.Component {
                 width,
                 height,
                 borderRadius,
+                backgroundColor: buttonActive
+                    ? decodeBlynkColor(widget.getIn(['onButtonState', 'backgroundColor']))
+                    : decodeBlynkColor(widget.getIn(['offButtonState', 'backgroundColor'])),
+
+                color: buttonActive
+                    ? decodeBlynkColor(widget.getIn(['onButtonState', 'textColor']))
+                    : decodeBlynkColor(widget.getIn(['offButtonState', 'textColor'])),
             };
         }
 
@@ -79,11 +101,21 @@ export class ButtonView extends React.Component {
             margin: 2,
             width: (Math.min(width, height) * widget.get('width')) / 2 - 4,
             height: Math.min(width, height) - 4,
+            border: `2px solid ${decodeBlynkColor(widget.get('color'))}`,
+            color: this.isButtonActive() ? decodeBlynkColor(-1) : decodeBlynkColor(widget.get('color')),
+            backgroundColor: this.isButtonActive() ? decodeBlynkColor(widget.get('color')) : decodeBlynkColor(255),
         };
     }
 
-    render() {
+    isButtonActive() {
+        const { pressed } = this.state;
         const { widget, value } = this.props;
+
+        return String(value) === String(widget.get('max')) || pressed;
+    }
+
+    render() {
+        const { widget } = this.props;
 
         const isStyledButton = widget.get('type') === 'STYLED_BUTTON';
 
@@ -98,7 +130,7 @@ export class ButtonView extends React.Component {
                                     [styles.button]: !isStyledButton,
                                     [styles.styledButton]: isStyledButton,
                                 })}
-                                active={Number(value) === Number(widget.get('max'))}
+                                active={this.isButtonActive()}
                                 onMouseDown={this.handleMouseDown}
                                 onMouseUp={this.handleMouseUp}
                                 style={this.getButtonStyle({ width, height, isStyledButton })}

@@ -1,3 +1,24 @@
+export function decodeBlynkColor(blynkColor) {
+    switch (blynkColor) {
+        case 600084223: // Green
+            return '#23C48E';
+        case 1602017535: // Purple
+            return '#5F7CD8';
+        case 79755519: // Blue
+            return '#04C0F8';
+        case -308477697: // Orange
+            return '#ED9D00';
+        case -750560001: // Red
+            return '#D3435C';
+        case -1: // White
+            return '#FFFFFF';
+        case 255: // Black
+            return '#293742';
+        default:
+    }
+    return '#999';
+}
+
 export function numToCssColor(num) {
     const color = parseColor(num);
     if (color[0] === 0 && color[1] === 0 && color[2] === 0) {

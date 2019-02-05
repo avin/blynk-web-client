@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import styles from './styles.module.scss';
-import { numToCssColor } from '../../../../../../utils/color';
+import { decodeBlynkColor } from '../../../../../../utils/color';
 import { pinValueSelector } from '../../../../../../redux/selectors';
 
 export class NumericalDisplayView extends React.Component {
@@ -36,7 +36,7 @@ export class NumericalDisplayView extends React.Component {
         return (
             <div>
                 <div className="label">{widget.get('label')}</div>
-                <div className={styles.value} style={{ color: numToCssColor(widget.get('color')), fontSize }}>
+                <div className={styles.value} style={{ color: decodeBlynkColor(widget.get('color')), fontSize }}>
                     {this.renderValue()}
                 </div>
             </div>

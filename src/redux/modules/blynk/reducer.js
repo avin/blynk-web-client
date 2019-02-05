@@ -12,7 +12,7 @@ import { getWidgetPinAddress } from '../../../utils/data';
 const defaultToken = localStorage.getItem('blynk-web-client:token');
 const defaultServerHost = localStorage.getItem('blynk-web-client:serverHost') || 'blynk-cloud.com';
 const defaultPort = Number(localStorage.getItem('blynk-web-client:serverPort')) || 8080;
-const defaultConnectionMode = Number(localStorage.getItem('blynk-web-client:connectionMode')) || 'no-ssl';
+const defaultConnectionMode = localStorage.getItem('blynk-web-client:connectionMode') || 'no-ssl';
 
 const initialState = Immutable.fromJS({
     token: defaultToken,

@@ -4,6 +4,7 @@ import { Form, Field } from 'react-final-form';
 import cn from 'clsx';
 import { Button, FormGroup, HTMLSelect, InputGroup, Intent, TextArea } from '@blueprintjs/core';
 import * as Immutable from 'immutable';
+import trim from 'lodash/trim';
 import { setConnectionParams, testConnection } from '../../../redux/modules/blynk/actions';
 import styles from './styles.module.scss';
 import { required } from '../../../utils/validation';
@@ -36,8 +37,13 @@ export class ConnectionPage extends React.Component {
     handleSubmit = async params => {
         const { setConnectionParams, history, testConnection } = this.props;
 
+        const tokens = params.tokens
+            .split(/[\r]?\n/)
+            .map(i => trim(i))
+            .filter(i => i);
+
         setConnectionParams({
-            tokens: Immutable.fromJS(params.tokens.split(/[\r]?\n/)),
+            tokens: Immutable.fromJS(tokens),
             serverHost: params.serverHost,
             serverPort: params.serverPort,
             connectionMode: params.connectionMode,

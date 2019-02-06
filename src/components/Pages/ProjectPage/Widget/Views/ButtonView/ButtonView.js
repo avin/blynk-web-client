@@ -102,7 +102,9 @@ export class ButtonView extends React.Component {
             width: (Math.min(width, height) * widget.get('width')) / 2 - 4,
             height: Math.min(width, height) - 4,
             border: `2px solid ${decodeBlynkColor(widget.get('color'))}`,
-            color: this.isButtonActive() ? decodeBlynkColor(-1) : decodeBlynkColor(widget.get('color')),
+            color: this.isButtonActive()
+                ? decodeBlynkColor(widget.get('color') !== -1 ? -1 : 255)
+                : decodeBlynkColor(widget.get('color')),
             backgroundColor: this.isButtonActive() ? decodeBlynkColor(widget.get('color')) : decodeBlynkColor(255),
         };
     }

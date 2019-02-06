@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import styles from './styles.module.scss';
 import { pinValueSelector } from '../../../../../../redux/selectors';
+import { formatValueString } from '../../../../../../utils/data';
 
 export class LcdDisplayView extends React.Component {
     renderValue(pinIdx) {
@@ -9,19 +10,13 @@ export class LcdDisplayView extends React.Component {
 
         const value = pinIdx === 1 ? value1 : value2;
 
-        let valueStr;
-        if (isNaN(Number(value))) {
-            valueStr = value;
-        } else {
-            valueStr = parseFloat(Number(value).toFixed(2));
-        }
-
-        const valueFormatting = widget.get(`textFormatLine${pinIdx}`);
-        if (valueFormatting) {
-            valueStr = valueFormatting.replace(new RegExp(`/pin${pinIdx - 1}/`, 'gi'), valueStr);
-        }
-
-        return <span>{valueStr}</span>;
+        return (
+            <span
+                dangerouslySetInnerHTML={{
+                    __html: formatValueString(value, widget.get(`textFormatLine${pinIdx}`), `pin${pinIdx}`),
+                }}
+            />
+        );
     }
 
     render() {

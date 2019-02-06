@@ -3,9 +3,9 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import * as d3 from 'd3';
 import cn from 'clsx';
-import escape from 'lodash/escape';
 import styles from './styles.module.scss';
 import { decodeBlynkColor } from '../../../../../../../utils/color';
+import { formatValueString } from '../../../../../../../utils/data';
 
 export class GaugeChart extends React.Component {
     static propTypes = {
@@ -89,13 +89,7 @@ export class GaugeChart extends React.Component {
                     }),
                 );
 
-            let valueStr;
-            if (valueFormatting) {
-                valueStr = valueFormatting.replace(/\/pin\//, `<span class="pinValue">${escape(value)}</span>`);
-            } else {
-                valueStr = `<span class="pinValue">${escape(value)}</span>`;
-            }
-            chart.select('.value').html(valueStr);
+            chart.select('.value').html(formatValueString(value, valueFormatting));
         };
         this.redraw();
     }

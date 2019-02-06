@@ -3,24 +3,19 @@ import { connect } from 'react-redux';
 import styles from './styles.module.scss';
 import { decodeBlynkColor } from '../../../../../../utils/color';
 import { pinValueSelector } from '../../../../../../redux/selectors';
+import { formatValueString } from '../../../../../../utils/data';
 
 export class NumericalDisplayView extends React.Component {
     renderValue() {
         const { value, widget } = this.props;
 
-        let valueStr;
-        if (isNaN(Number(value))) {
-            valueStr = value;
-        } else {
-            valueStr = parseFloat(Number(value).toFixed(2));
-        }
-
-        const valueFormatting = widget.get('valueFormatting');
-        if (valueFormatting) {
-            valueStr = valueFormatting.replace(/\/pin\//gi, valueStr);
-        }
-
-        return <span>{valueStr}</span>;
+        return (
+            <span
+                dangerouslySetInnerHTML={{
+                    __html: formatValueString(value, widget.get('valueFormatting')),
+                }}
+            />
+        );
     }
 
     render() {

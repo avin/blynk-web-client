@@ -31,6 +31,8 @@ function getCommandByString(cmdString) {
             return MsgType.LOGIN;
         case 'hardware':
             return MsgType.HARDWARE;
+        case 'bridge':
+            return MsgType.BRIDGE;
         default:
     }
 }
@@ -116,6 +118,8 @@ class BlynkWSClient extends EventTarget {
 
         this.send(`login ${this.token}`);
 
+        this.send(`bridge 9999 i ${this.token}`);
+
         this.pingTimer = repeat({
             action: () => {
                 this.send('ping');
@@ -197,6 +201,7 @@ class BlynkWSClient extends EventTarget {
 
         if (!dontSend) {
             this.throttleSend(pin)(`hardware ${pinType}w ${pinNumber} ${value}`);
+            this.send(`bridge 9999 ${pinType}w ${pinNumber} ${value}`);
         }
 
         this.dispatchWritePin(pin, value);

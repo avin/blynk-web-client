@@ -1,6 +1,5 @@
 import escape from 'lodash/escape';
 import escapeRegExp from 'lodash/escapeRegExp';
-import isNumber from 'lodash/isNumber';
 
 export function getWidgetPinAddress(widget) {
     if (widget.get('pin') === -1) {
@@ -15,7 +14,7 @@ export function makeValueSpan(valueStr) {
 
 export function formatValueString(value, valueFormatting, pinExpression = 'pin') {
     if (!valueFormatting) {
-        if (isNumber(value)) {
+        if (value && !isNaN(value)) {
             value = parseFloat(Number(value).toFixed(2));
         }
         return `<span class="pinValue">${escape(value)}</span>`;

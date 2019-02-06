@@ -1,7 +1,13 @@
 import createCachedSelector from 're-reselect';
 import * as Immutable from 'immutable';
 
-export const pinValueSelector = (state, deviceId, pinId) => state.blynk.getIn(['devices', deviceId, 'pins', pinId]);
+export const pinValueSelector = (state, deviceId, pinId) => {
+    let value = state.blynk.getIn(['devices', deviceId, 'pins', pinId]);
+    if (value && !isNaN(value)) {
+        value = parseFloat(Number(value).toFixed(2));
+    }
+    return value;
+};
 
 export const widgetDataStreamsHistorySelector = createCachedSelector(
     (state, widget) => widget,

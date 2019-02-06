@@ -14,9 +14,6 @@ export function makeValueSpan(valueStr) {
 
 export function formatValueString(value, valueFormatting, pinExpression = 'pin') {
     if (!valueFormatting) {
-        if (value && !isNaN(value)) {
-            value = parseFloat(Number(value).toFixed(2));
-        }
         return `<span class="pinValue">${escape(value)}</span>`;
     }
 

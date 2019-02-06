@@ -28,10 +28,20 @@ export class NumericalDisplayView extends React.Component {
             fontSize = `14px`;
         }
 
+        let textAlign;
+        if (widget.get('textAlignment') === 'MIDDLE') {
+            textAlign = 'center';
+        } else if (widget.get('textAlignment') === 'RIGHT') {
+            textAlign = 'right';
+        }
+
         return (
             <div>
                 <div className="label">{widget.get('label')}</div>
-                <div className={styles.value} style={{ color: decodeBlynkColor(widget.get('color')), fontSize }}>
+                <div
+                    className={styles.value}
+                    style={{ textAlign, color: decodeBlynkColor(widget.get('color')), fontSize }}
+                >
                     {this.renderValue()}
                 </div>
             </div>

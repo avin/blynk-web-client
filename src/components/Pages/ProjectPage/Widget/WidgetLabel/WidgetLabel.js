@@ -2,6 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styles from './styles.module.scss';
 
+const isEmptyString = str => str === '' || str === undefined;
+
 export default class WidgetLabel extends React.Component {
     static propTypes = {
         title: PropTypes.node,
@@ -16,7 +18,7 @@ export default class WidgetLabel extends React.Component {
     render() {
         const { title, information, emptyHide } = this.props;
 
-        if (!title && !information && emptyHide) {
+        if (isEmptyString(title) && isEmptyString(information) && emptyHide) {
             return <div />;
         }
 

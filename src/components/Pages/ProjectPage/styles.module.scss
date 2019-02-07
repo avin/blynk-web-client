@@ -40,7 +40,6 @@ $halfWidth: $mainWidth/2;
 }
 
 .headerInner{
-    max-width: $mainWidth;
     min-width: $mainWidth;
     display: flex;
     justify-content: space-between;
@@ -54,9 +53,30 @@ $halfWidth: $mainWidth/2;
 
 .headerTitle{
     font-size: 20px;
+    margin-right: 10px;
+}
 
+.headerControls{
+    display: flex;
+
+    :global{
+        *:not(:last-child) {
+            margin-right: 5px;
+        }
+    }
+}
+
+.headerDelimiter{
+    width: 1px;
+    background-color: $gray1;
+    margin: 3px 10px 3px 5px !important;
 }
 
 .widgetsArea {
     position: relative;
+}
+
+.selectAutoSync{
+    min-width: 150px;
+    top: -1px;
 }

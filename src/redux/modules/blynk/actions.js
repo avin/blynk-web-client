@@ -9,6 +9,7 @@ import {
     SET_PIN_HISTORY,
     LOGOUT,
     SET_ACTIVE_TAB_ID,
+    SET_AUTO_SYNC,
 } from './actionTypes';
 import { listToMap } from '../../../utils/immutable';
 import blynkWSClient from '../../../common/blynkWSClient';
@@ -61,7 +62,7 @@ export function logout() {
  */
 export function getProject() {
     return async (dispatch, getState) => {
-        const { tokens, serverHost, serverPort, connectionMode } = getState().blynk.toObject();
+        const { tokens, serverHost, serverPort, connectionMode, autoSync } = getState().blynk.toObject();
 
         let { body: project } = await request
             .get(`${getHttpBlynkUrl({ token: tokens.first(), serverHost, serverPort, connectionMode })}/project`)
@@ -138,6 +139,7 @@ export function getProject() {
 
                 dispatch(setPinValue({ deviceId, pin, value }));
             });
+            blynkWSClient(deviceId).setSyncTimerInterval(autoSync);
         });
 
         dispatch({
@@ -239,5 +241,42 @@ export function setActiveTabId(tabId) {
     return {
         type: SET_ACTIVE_TAB_ID,
         tabId,
+    };
+}
+
+/**
+ * Set auto sync timer delay for all ws clients
+ * @param value
+ * @returns {Function}
+ */
+export function setAutoSyncValue(value) {
+    localStorage.setItem('blynk-web-client:autoSync', value);
+    return (dispatch, getState) => {
+        const devices = getState().blynk.get('devices');
+
+        devices.forEach(device => {
+            const deviceId = device.get('id');
+            blynkWSClient(deviceId).setSyncTimerInterval(value);
+        });
+
+        dispatch({
+            type: SET_AUTO_SYNC,
+            value,
+        });
+    };
+}
+
+/**
+ * Sync HW pins for all devices
+ * @returns {Function}
+ */
+export function sync() {
+    return (dispatch, getState) => {
+        const devices = getState().blynk.get('devices');
+
+        devices.forEach(device => {
+            const deviceId = device.get('id');
+            blynkWSClient(deviceId).sync();
+        });
     };
 }

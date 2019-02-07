@@ -33,6 +33,8 @@ function getCommandByString(cmdString) {
             return MsgType.HARDWARE;
         case 'bridge':
             return MsgType.BRIDGE;
+        case 'hwSync':
+            return MsgType.HW_SYNC;
         default:
     }
 }
@@ -108,6 +110,14 @@ class BlynkWSClient extends EventTarget {
         this.socket.onerror = event => {
             console.warn('WS: Error');
         };
+
+        this.syncTimer = repeat({
+            action: () => {
+                this.sync();
+            },
+            delay: 1000,
+            skipFirst: false,
+        });
     }
 
     start() {
@@ -129,6 +139,20 @@ class BlynkWSClient extends EventTarget {
             skipFirst: true,
         });
         this.pingTimer.start();
+    }
+
+    setSyncTimerInterval(interval) {
+        if (!interval) {
+            this.syncTimer.stop();
+        } else {
+            this.syncTimer.updateDelay(interval);
+            this.syncTimer.stop();
+            this.syncTimer.start();
+        }
+    }
+
+    sync() {
+        this.send(`hwSync`);
     }
 
     stop() {

@@ -87,6 +87,7 @@ export class TerminalView extends React.Component {
                             >
                                 <pre className={cn('bp3-code-block', styles.output)}>
                                     {this.generateHistoryOutput()}
+                                    !!! TERMINAL OUTPUT IS UNDER CONSTRUCTION !!!
                                 </pre>
                             </Scrollbar>
                         )}

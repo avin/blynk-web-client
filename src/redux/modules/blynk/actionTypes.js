@@ -5,3 +5,4 @@ export const SET_PIN_HISTORY = 'app/blynk/SET_PIN_HISTORY';
 export const SET_TOKEN = 'app/blynk/SET_TOKEN';
 export const LOGOUT = 'app/blynk/LOGOUT';
 export const SET_ACTIVE_TAB_ID = 'app/blynk/SET_ACTIVE_TAB_ID';
+export const SET_AUTO_SYNC = 'app/blynk/SET_AUTO_SYNC';

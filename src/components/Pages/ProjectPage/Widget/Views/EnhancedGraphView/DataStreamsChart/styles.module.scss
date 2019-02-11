@@ -2,58 +2,80 @@
 
 .chartContainer {
     flex-grow: 1;
-    //background-color: $indigo1;
-}
+    color: #FF0;
+    font-size: 12px;
 
-.svg {
-    pointer-events: all;
-}
-
-.chartLine {
-    fill: none;
-    stroke-width: 2;
-}
-
-.leftAxis {
     :global {
-        text {
-            paint-order: stroke;
-            stroke: $dark-gray3;
-            stroke-width: 3px;
-            stroke-linecap: butt;
-            stroke-linejoin: miter;
-            font-weight: 600;
+        svg {
+
+            text {
+                pointer-events: none;
+            }
+
+            .chartLine {
+                fill: none;
+                stroke-width: 2;
+            }
+
+            .dataAxis {
+                text {
+                    paint-order: stroke;
+                    stroke: $dark-gray3;
+                    stroke-width: 3px;
+                    stroke-linecap: butt;
+                    stroke-linejoin: miter;
+                    font-weight: 600;
+                }
+            }
+
+            .timeAxis {
+                text {
+                    fill: $light-gray3;
+                }
+                .domain,
+                .tick line {
+                    stroke: $gray1;
+                }
+            }
+
+            .tipMouseLine,
+            .tipPointerLine {
+                stroke: $light-gray3;
+                stroke-width: 1px;
+            }
+
+            .tipCircle {
+                stroke-width: 2px;
+                fill: $dark-gray1;
+            }
+
+            .tipText {
+                transform: translate(6px, 4px);
+                fill: $light-gray5;
+
+                paint-order: stroke;
+                stroke: $dark-gray3;
+                stroke-width: 3px;
+                stroke-linecap: butt;
+                stroke-linejoin: miter;
+                font-weight: 400;
+            }
+
+            .tipTime {
+            }
+
+            .tipTimeRect {
+                fill: $light-gray3;
+            }
+
+            .tipTimeText {
+                fill: $dark-gray3;
+            }
+
+            .tipTimeText {
+                alignment-baseline: middle;
+                dominant-baseline: middle;
+            }
         }
     }
-}
-
-.tipMouseLine {
-    stroke: $light-gray3;
-    stroke-width: 1px;
-}
-
-.tipCircle {
-    stroke-width: 2px;
-    fill: $dark-gray1;
-}
-
-.tipText {
-    transform: translate(6px, 4px);
-    font-size: 12px;
-    fill: $light-gray5;
-
-    paint-order: stroke;
-    stroke: $dark-gray3;
-    stroke-width: 3px;
-    stroke-linecap: butt;
-    stroke-linejoin: miter;
-    font-weight: 400;
-}
-
-.tipTime {
-    font-size: 13px;
-}
-
-.tipTimeRect {
-    fill: $light-gray3;
 }

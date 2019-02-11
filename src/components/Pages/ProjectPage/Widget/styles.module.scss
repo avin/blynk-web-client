@@ -5,11 +5,16 @@
     padding: 5px;
     border-radius: 3px;
     color: $dark-gray5;
-    background-color: $light-gray3;
+    background-color: rgba($light-gray3, 0.7);
     border: 1px solid $gray3;
     font-size: 14px;
     display: flex;
     flex-direction: column;
+    transition: background-color 200ms linear;
+
+    &:hover{
+        background-color: $light-gray3;
+    }
 }
 
 .tabsRoot {
@@ -18,7 +23,11 @@
 }
 
 :global(.bp3-dark) .root {
-    background-color: $dark-gray3;
+    background-color: rgba($dark-gray3, 0.7);
     border: 1px solid $dark-gray1;
     color: $gray5;
+
+    &:hover{
+        background-color: $dark-gray3;
+    }
 }

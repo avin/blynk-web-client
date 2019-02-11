@@ -6,9 +6,18 @@
     opacity: 0.5;
 }
 
+.root {
+
+
+}
+
 .chart {
     flex-grow: 1;
+}
+
+.header {
     display: flex;
+    justify-content: space-between;
 }
 
 .widgetLabelContainer {

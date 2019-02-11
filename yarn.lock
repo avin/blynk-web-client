@@ -2,6 +2,13 @@
 # yarn lockfile v1
 
 
+"@avinlab/d3-timeseries-multi-chart@^0.2.2":
+  version "0.2.2"
+  resolved "https://registry.yarnpkg.com/@avinlab/d3-timeseries-multi-chart/-/d3-timeseries-multi-chart-0.2.2.tgz#76f0e64b820eac9ca776228ddb1549ace61b33bc"
+  integrity sha512-TAcy4QmTpu1oUywwfiMe1Bn3/FpVEe1yNJjy4OxaFVjMSnH8qtpk2xyblsBDF9eFiJyYY52cjwsuw6kK8zMJpQ==
+  dependencies:
+    d3 "^5.9.0"
+
 "@avinlab/react-size-me@^1.1.5":
   version "1.1.5"
   resolved "https://registry.yarnpkg.com/@avinlab/react-size-me/-/react-size-me-1.1.5.tgz#6fbc5bdb9984f52ff58ef7195cba28fce766cbf2"
@@ -3253,6 +3260,43 @@ d3@^5.8.0:
   version "5.8.0"
   resolved "https://registry.yarnpkg.com/d3/-/d3-5.8.0.tgz#251f12fe46d811ef300664590ec85eb574c44896"
   integrity sha512-0rc4LL3fbyWhAqrxOt00svoxB2qoHHo6Bgs0WGcDPZ8ELqbA09evfeCnuy0ZrYbRHc+hCvBZaTT+GW3pnn05fw==
+  dependencies:
+    d3-array "1"
+    d3-axis "1"
+    d3-brush "1"
+    d3-chord "1"
+    d3-collection "1"
+    d3-color "1"
+    d3-contour "1"
+    d3-dispatch "1"
+    d3-drag "1"
+    d3-dsv "1"
+    d3-ease "1"
+    d3-fetch "1"
+    d3-force "1"
+    d3-format "1"
+    d3-geo "1"
+    d3-hierarchy "1"
+    d3-interpolate "1"
+    d3-path "1"
+    d3-polygon "1"
+    d3-quadtree "1"
+    d3-random "1"
+    d3-scale "2"
+    d3-scale-chromatic "1"
+    d3-selection "1"
+    d3-shape "1"
+    d3-time "1"
+    d3-time-format "2"
+    d3-timer "1"
+    d3-transition "1"
+    d3-voronoi "1"
+    d3-zoom "1"
+
+d3@^5.9.0:
+  version "5.9.1"
+  resolved "https://registry.yarnpkg.com/d3/-/d3-5.9.1.tgz#fde73fa9af7281d2ff0d2a32aa8f306e93a6d1cd"
+  integrity sha512-JceuBn5VVWySPQc9EA0gfq0xQVgEQXGokHhe+359bmgGeUITLK2r2b9idMzquQne9DKxb7JDCE1gDRXe9OIF2Q==
   dependencies:
     d3-array "1"
     d3-axis "1"

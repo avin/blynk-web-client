@@ -8,10 +8,13 @@ import { widgetDataStreamsHistorySelector } from '../../../../../../redux/select
 import styles from './styles.module.scss';
 import DataStreamsChart from './DataStreamsChart/DataStreamsChart';
 import WidgetLabel from '../../WidgetLabel/WidgetLabel';
+import ChartLegend from './ChartLegend/ChartLegend';
+import ChartControl from './ChartControl/ChartControl';
 
 export class EnhancedGraphView extends React.Component {
     state = {
         historyIsReady: false,
+        hiddenDataStreams: [],
     };
 
     async getHistory() {
@@ -31,29 +34,60 @@ export class EnhancedGraphView extends React.Component {
         this.getHistory();
     }
 
+    handleChangeDuration = duration => {
+        if (this.dataStreamsChart && this.dataStreamsChart.chart) {
+            this.dataStreamsChart.chart.setChartDuration(duration);
+        }
+    };
+
+    handleClickLegendItem = itemId => {
+        let { hiddenDataStreams } = this.state;
+        if (hiddenDataStreams.includes(itemId)) {
+            hiddenDataStreams = hiddenDataStreams.filter(i => i !== itemId);
+        } else {
+            hiddenDataStreams = [...hiddenDataStreams, itemId];
+        }
+        this.setState({ hiddenDataStreams });
+    };
+
     renderChart() {
         const { widget, dataStreamsHistory } = this.props;
+        const { hiddenDataStreams } = this.state;
 
         const showXAxis = widget.get('xAxisValues');
 
         return (
-            <div className={styles.chart}>
-                <SizeMe>
-                    {({ width, height }) =>
-                        !!height && (
-                            <DataStreamsChart
-                                dataStreams={widget.get('dataStreams')}
-                                dataStreamsHistory={dataStreamsHistory}
-                                controlBlockRef={this.controlBlockRef}
-                                legendBlockRef={this.legendBlockRef}
-                                showXAxis={showXAxis}
-                                width={width}
-                                height={height}
-                            />
-                        )
-                    }
-                </SizeMe>
-            </div>
+            <>
+                <div className={styles.header}>
+                    <ChartLegend
+                        dataStreams={widget.get('dataStreams')}
+                        onClickItem={this.handleClickLegendItem}
+                        disabledItems={hiddenDataStreams}
+                    />
+                    <ChartControl onChangeDuration={this.handleChangeDuration} />
+                </div>
+                <div className={styles.chart}>
+                    <SizeMe>
+                        {({ width, height }) =>
+                            !!height && (
+                                <DataStreamsChart
+                                    dataStreams={widget.get('dataStreams')}
+                                    dataStreamsHistory={dataStreamsHistory}
+                                    controlBlockRef={this.controlBlockRef}
+                                    legendBlockRef={this.legendBlockRef}
+                                    showXAxis={showXAxis}
+                                    width={width}
+                                    height={height}
+                                    disabledItems={hiddenDataStreams}
+                                    ref={i => {
+                                        this.dataStreamsChart = i;
+                                    }}
+                                />
+                            )
+                        }
+                    </SizeMe>
+                </div>
+            </>
         );
     }
 

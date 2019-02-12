@@ -43,17 +43,17 @@ export default class DataStreamsChart extends React.Component {
                     type = 'line';
             }
 
-            chartDataStreams.push({
-                label: dataStream.get('title'),
-                color: disabledItems.includes(idx)
-                    ? 'rgba(255,255,255,0.1)'
-                    : decodeBlynkColor(dataStream.get('color')),
-                data: dataStreamsHistory[idx],
-                showAxis: dataStream.get('showYAxis'),
-                strokeWidth: 1,
-                showDots: type === 'bar',
-                type,
-            });
+            if (!disabledItems.includes(idx)) {
+                chartDataStreams.push({
+                    label: dataStream.get('title'),
+                    color: decodeBlynkColor(dataStream.get('color')),
+                    data: dataStreamsHistory[idx],
+                    showAxis: dataStream.get('showYAxis'),
+                    strokeWidth: 1,
+                    showDots: type === 'bar',
+                    type,
+                });
+            }
         });
 
         this.chart.render(chartDataStreams);

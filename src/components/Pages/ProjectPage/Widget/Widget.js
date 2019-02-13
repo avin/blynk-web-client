@@ -18,6 +18,7 @@ import StepView from './Views/StepView/StepView';
 import LedView from './Views/LedView/LedView';
 import TabsView from './Views/TabsView/TabsView';
 import EmptyView from './Views/EmptyView/EmptyView';
+import MapView from './Views/MapView/MapView';
 
 const WIDGET_VIEW_COMPONENTS = {
     BUTTON: ButtonView,
@@ -42,6 +43,7 @@ const WIDGET_VIEW_COMPONENTS = {
     NOTIFICATION: EmptyView,
     TWITTER: EmptyView,
     BRIDGE: EmptyView,
+    MAP: MapView,
 };
 
 export class Widget extends React.Component {

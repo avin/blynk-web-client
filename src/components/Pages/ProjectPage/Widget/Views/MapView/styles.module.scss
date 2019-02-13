@@ -1,0 +1,10 @@
+@import 'src/styles/variables.scss';
+
+.map{
+
+    :global{
+        .leaflet-control-container{
+            display: none;
+        }
+    }
+}

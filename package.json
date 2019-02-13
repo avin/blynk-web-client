@@ -13,6 +13,7 @@
     "d3": "^5.8.0",
     "final-form": "^4.11.0",
     "immutable": "^4.0.0-rc.12",
+    "leaflet": "^1.4.0",
     "lodash": "^4.17.11",
     "node-sass": "^4.11.0",
     "normalize.css": "^8.0.1",

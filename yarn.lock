@@ -2,10 +2,10 @@
 # yarn lockfile v1
 
 
-"@avinlab/d3-timeseries-multi-chart@^0.2.4":
-  version "0.2.4"
-  resolved "https://registry.yarnpkg.com/@avinlab/d3-timeseries-multi-chart/-/d3-timeseries-multi-chart-0.2.4.tgz#c8a02e910476244da4e982e7e05b4c0b834e6ab6"
-  integrity sha512-ml4To8WEr4gNDz8KeiwYpNw5CtYMA2V2NGq6Ilcygi3FCOr97dt1W+f7Qiobz/LMcjwYZGEGhHUcgK7BhuEGJg==
+"@avinlab/d3-timeseries-multi-chart@^0.2.5":
+  version "0.2.5"
+  resolved "https://registry.yarnpkg.com/@avinlab/d3-timeseries-multi-chart/-/d3-timeseries-multi-chart-0.2.5.tgz#040a5bb02d25a80f2aeb183f9bada4c4c713a1f5"
+  integrity sha512-cZJiclredX1h4I9PHdckQNjBFrjc3Q1sgB5c/CfuJJ+N1Ue96y2kNLsX0PdD91TlbB5vKMyMn/iAPRCIt9Fycw==
   dependencies:
     d3 "^5.9.0"
 

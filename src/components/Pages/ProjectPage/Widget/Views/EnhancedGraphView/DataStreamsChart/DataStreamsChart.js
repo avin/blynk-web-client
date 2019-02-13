@@ -44,15 +44,28 @@ export default class DataStreamsChart extends React.Component {
             }
 
             if (!disabledItems.includes(idx)) {
-                chartDataStreams.push({
+                const color = decodeBlynkColor(dataStream.get('color'), true);
+
+                const chartDataStream = {
                     label: dataStream.get('title'),
-                    color: decodeBlynkColor(dataStream.get('color')),
+                    color: color[1],
+                    colorFrom: color[1],
+                    colorTo: color[0],
                     data: dataStreamsHistory[idx],
                     showAxis: dataStream.get('showYAxis'),
                     strokeWidth: 1,
                     showDots: type === 'bar',
                     type,
-                });
+                };
+
+                if (dataStream.get('yAxisScale') === 'HEIGHT') {
+                    chartDataStream.scaleRange = [
+                        100 - dataStream.get('yAxisMax', 100),
+                        100 - dataStream.get('yAxisMin', 0),
+                    ];
+                }
+
+                chartDataStreams.push(chartDataStream);
             }
         });
 

@@ -1,22 +1,54 @@
-export function decodeBlynkColor(blynkColor) {
+export function decodeBlynkColor(blynkColor, gradient = false) {
+    let color;
     switch (blynkColor) {
         case 600084223: // Green
-            return '#23C48E';
+            color = '#23C48E';
+            break;
         case 1602017535: // Purple
-            return '#5F7CD8';
+            color = '#5F7CD8';
+            break;
         case 79755519: // Blue
-            return '#04C0F8';
+            color = '#04C0F8';
+            break;
         case -308477697: // Orange
-            return '#ED9D00';
+            color = '#ED9D00';
+            break;
         case -750560001: // Red
-            return '#D3435C';
+            color = '#D3435C';
+            break;
         case -1: // White
-            return '#FFFFFF';
+            color = '#FFFFFF';
+            break;
         case 255: // Black
-            return '#293742';
+            color = '#293742';
+            break;
         default:
+            color = '#999';
     }
-    return '#999';
+
+    if (!gradient) {
+        return color;
+    }
+
+    switch (blynkColor) {
+        case 2147483647: // Green/Red
+            color = ['#23C48E', '#D3435C'];
+            break;
+        case -2147483648: // Green/Blue
+            color = ['#23C48E', '#04C0F8'];
+            break;
+        case 2147483646: // Red/Green
+            color = ['#D3435C', '#23C48E'];
+            break;
+        case -2147483647: // Blue/Green
+            color = ['#04C0F8', '#23C48E'];
+            break;
+
+        default:
+            color = [color, color];
+    }
+
+    return color;
 }
 
 export function numToCssColor(num) {

@@ -5,7 +5,7 @@
     padding: 5px;
     border-radius: 3px;
     color: $dark-gray5;
-    background-color: rgba($light-gray3, 0.7);
+    background-color: rgba($light-gray3, 0.85);
     border: 1px solid $gray3;
     font-size: 14px;
     display: flex;
@@ -23,7 +23,7 @@
 }
 
 :global(.bp3-dark) .root {
-    background-color: rgba($dark-gray3, 0.7);
+    background-color: rgba($dark-gray3, 0.85);
     border: 1px solid $dark-gray1;
     color: $gray5;
 

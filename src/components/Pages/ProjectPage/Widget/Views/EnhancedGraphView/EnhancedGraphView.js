@@ -56,6 +56,10 @@ export class EnhancedGraphView extends React.Component {
 
         const showXAxis = widget.get('xAxisValues');
 
+        if (!widget.get('dataStreams')) {
+            return <div>Empty chart</div>;
+        }
+
         return (
             <>
                 <div className={styles.header}>

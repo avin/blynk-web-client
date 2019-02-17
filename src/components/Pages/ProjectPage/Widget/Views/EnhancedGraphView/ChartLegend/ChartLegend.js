@@ -27,8 +27,8 @@ export default class ChartLegend extends React.Component {
                             <div
                                 className={styles.legendCell}
                                 style={{
-                                    backgroundColor: disabledItems.includes(idx) ? undefined : color[1],
-                                    border: `1px solid ${color[1]}`,
+                                    backgroundColor: disabledItems.includes(idx) ? undefined : color[0],
+                                    border: `1px solid ${color[0]}`,
                                 }}
                             />
                             {dataStream.get('title')}

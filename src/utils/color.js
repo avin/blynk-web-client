@@ -34,16 +34,16 @@ export function decodeBlynkColor(blynkColor, gradient = false) {
 
     switch (blynkColor) {
         case 2147483647: // Green/Red
-            color = ['#23C48E', '#D3435C'];
+            color = ['#D3435C', '#ED9D00', '#23C48E'];
             break;
         case -2147483648: // Green/Blue
-            color = ['#23C48E', '#04C0F8'];
+            color = ['#5F7CD8', '#04C0F8', '#23C48E'];
             break;
         case 2147483646: // Red/Green
-            color = ['#D3435C', '#23C48E'];
+            color = ['#23C48E', '#ED9D00', '#D3435C'];
             break;
         case -2147483647: // Blue/Green
-            color = ['#04C0F8', '#23C48E'];
+            color = ['#23C48E', '#04C0F8', '#5F7CD8'];
             break;
 
         default:
@@ -83,7 +83,7 @@ export function getWidgetValueColor(widget, value) {
     const colorRange = decodeBlynkColor(widget.get('color'), true);
     const valueProportion = (value - widget.get('min')) / widget.get('max') - widget.get('min');
     if (isNaN(valueProportion)) {
-        return colorRange[0];
+        return colorRange[colorRange.length - 1];
     }
-    return d3.interpolate(colorRange[1], colorRange[0])(valueProportion);
+    return d3.interpolateRgbBasis(colorRange)(valueProportion);
 }

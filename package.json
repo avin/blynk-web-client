@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@avinlab/d3-timeseries-multi-chart": "^0.2.5",
+    "@avinlab/d3-timeseries-multi-chart": "^0.2.7",
     "@avinlab/react-size-me": "^1.1.5",
     "@avinlab/repeat": "^1.0.1",
     "@blueprintjs/core": "^3.12.0",

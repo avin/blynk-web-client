@@ -44,13 +44,12 @@ export default class DataStreamsChart extends React.Component {
             }
 
             if (!disabledItems.includes(idx)) {
-                const color = decodeBlynkColor(dataStream.get('color'), true);
+                const colors = decodeBlynkColor(dataStream.get('color'), true);
 
                 const chartDataStream = {
                     label: dataStream.get('title'),
-                    color: color[1],
-                    colorFrom: color[1],
-                    colorTo: color[0],
+                    color: colors[0],
+                    colorGradient: colors,
                     data: dataStreamsHistory[idx],
                     showAxis: dataStream.get('showYAxis'),
                     strokeWidth: 1,

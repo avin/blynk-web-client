@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Button, InputGroup } from '@blueprintjs/core';
+import trim from 'lodash/trim';
 import WidgetLabel from '../../WidgetLabel/WidgetLabel';
 import styles from './styles.module.scss';
 import { pinValueSelector } from '../../../../../../redux/selectors';
@@ -95,6 +96,8 @@ export class TextInputView extends React.Component {
         const { inputValue } = this.state;
         const { isNumberInput } = this;
 
+        const suffix = trim(widget.get('suffix', ''));
+
         let rightElement;
         let leftElement;
         if (isNumberInput) {
@@ -127,7 +130,7 @@ export class TextInputView extends React.Component {
 
         return (
             <>
-                <WidgetLabel title={widget.get('label')} />
+                <WidgetLabel title={trim(widget.get('label', '') + (suffix ? ` (${suffix})` : ''))} />
                 <div className={styles.container}>
                     <InputGroup
                         placeholder={widget.get('hint')}

@@ -75,7 +75,32 @@ function ab2str(buf) {
     return String.fromCharCode.apply(null, new Uint8Array(buf));
 }
 
-class BlynkWSClient extends EventTarget {
+class EventHandler {
+    constructor() {
+        this._events = {};
+    }
+
+    addEventListener(event, action) {
+        this._events[event] = this._events[event] || [];
+        if (!this._events[event].includes(action)) {
+            this._events[event].push(action);
+        }
+    }
+
+    removeEventListener(event, action) {
+        this._events[event] = this._events[event] || [];
+        this._events[event] = this._events[event].filter(i => i !== action);
+    }
+
+    dispatchEvent(event, details) {
+        this._events[event] = this._events[event] || [];
+        this._events[event].forEach(eventHandler => {
+            eventHandler(details);
+        });
+    }
+}
+
+class BlynkWSClient extends EventHandler {
     isRunning = false; // WS Connection status
     socket = null; // WS Socket
     pingTimer = null; // Internal ping timer
@@ -203,14 +228,10 @@ class BlynkWSClient extends EventTarget {
      * @param value
      */
     dispatchWritePin(pin, value) {
-        this.dispatchEvent(
-            new CustomEvent('write-pin', {
-                detail: {
-                    pin: `${pin}`,
-                    value,
-                },
-            }),
-        );
+        this.dispatchEvent('write-pin', {
+            pin: `${pin}`,
+            value,
+        });
     }
 
     /**

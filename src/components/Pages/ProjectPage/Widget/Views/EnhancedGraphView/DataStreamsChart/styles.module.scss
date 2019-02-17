@@ -21,7 +21,7 @@
                 text {
                     paint-order: stroke;
                     stroke: $dark-gray3;
-                    stroke-width: 3px;
+                    stroke-width: 0; // ie fix
                     stroke-linecap: butt;
                     stroke-linejoin: miter;
                     font-weight: 600;
@@ -55,7 +55,7 @@
 
                 paint-order: stroke;
                 stroke: $dark-gray3;
-                stroke-width: 3px;
+                stroke-width: 0; // ie fix
                 stroke-linecap: butt;
                 stroke-linejoin: miter;
                 font-weight: 400;

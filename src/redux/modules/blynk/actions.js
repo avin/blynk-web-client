@@ -134,9 +134,7 @@ export function getProject() {
                 serverPort,
                 connectionMode,
             });
-            blynkWSClient(deviceId).addEventListener('write-pin', e => {
-                const { pin, value } = e.detail;
-
+            blynkWSClient(deviceId).addEventListener('write-pin', ({ pin, value }) => {
                 dispatch(setPinValue({ deviceId, pin, value }));
             });
             blynkWSClient(deviceId).setSyncTimerInterval(autoSync);

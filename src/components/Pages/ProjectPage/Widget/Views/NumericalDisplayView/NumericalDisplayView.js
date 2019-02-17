@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import styles from './styles.module.scss';
-import { decodeBlynkColor } from '../../../../../../utils/color';
+import { getWidgetValueColor } from '../../../../../../utils/color';
 import { pinValueSelector } from '../../../../../../redux/selectors';
 import { formatValueString } from '../../../../../../utils/data';
 
@@ -19,7 +19,7 @@ export class NumericalDisplayView extends React.Component {
     }
 
     render() {
-        const { widget } = this.props;
+        const { widget, value } = this.props;
 
         let fontSize;
         if (widget.get('fontSize') === 'LARGE') {
@@ -35,13 +35,12 @@ export class NumericalDisplayView extends React.Component {
             textAlign = 'right';
         }
 
+        const color = getWidgetValueColor(widget, value);
+
         return (
             <div>
                 <div className="label">{widget.get('label')}</div>
-                <div
-                    className={styles.value}
-                    style={{ textAlign, color: decodeBlynkColor(widget.get('color')), fontSize }}
-                >
+                <div className={styles.value} style={{ textAlign, color, fontSize }}>
                     {this.renderValue()}
                 </div>
             </div>

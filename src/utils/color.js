@@ -1,3 +1,5 @@
+import * as d3 from 'd3';
+
 export function decodeBlynkColor(blynkColor, gradient = false) {
     let color;
     switch (blynkColor) {
@@ -75,4 +77,13 @@ function setAlphaComponent(color, alpha) {
 function parseColor(value) {
     const decodedColor = Number(value);
     return convertARGBtoRGBA(setAlphaComponent(decodedColor, 255));
+}
+
+export function getWidgetValueColor(widget, value) {
+    const colorRange = decodeBlynkColor(widget.get('color'), true);
+    const valueProportion = (value - widget.get('min')) / widget.get('max') - widget.get('min');
+    if (isNaN(valueProportion)) {
+        return colorRange[0];
+    }
+    return d3.interpolate(colorRange[1], colorRange[0])(valueProportion);
 }

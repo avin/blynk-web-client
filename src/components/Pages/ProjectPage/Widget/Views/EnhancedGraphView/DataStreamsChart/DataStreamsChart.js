@@ -46,14 +46,6 @@ export default class DataStreamsChart extends React.Component {
             if (!disabledItems.includes(idx)) {
                 const color = decodeBlynkColor(dataStream.get('color'), true);
 
-                const yAxisMin = dataStream.get('yAxisMin');
-                const yAxisMax = dataStream.get('yAxisMax');
-
-                let scaleDomain;
-                if (yAxisMin !== undefined && yAxisMax !== undefined) {
-                    scaleDomain = [yAxisMin, yAxisMax];
-                }
-
                 const chartDataStream = {
                     label: dataStream.get('title'),
                     color: color[1],
@@ -64,14 +56,25 @@ export default class DataStreamsChart extends React.Component {
                     strokeWidth: 1,
                     showDots: type === 'bar',
                     type,
-                    scaleDomain,
                 };
 
-                if (dataStream.get('yAxisScale') === 'HEIGHT') {
-                    chartDataStream.scaleRange = [
-                        100 - dataStream.get('yAxisMax', 100),
-                        100 - dataStream.get('yAxisMin', 0),
-                    ];
+                switch (dataStream.get('yAxisScale')) {
+                    case 'MINMAX': {
+                        chartDataStream.scaleDomain = [dataStream.get('yAxisMin', 0), dataStream.get('yAxisMax', 0)];
+                        break;
+                    }
+                    case 'HEIGHT': {
+                        chartDataStream.scaleRange = [
+                            100 - dataStream.get('yAxisMax', 100),
+                            100 - dataStream.get('yAxisMin', 0),
+                        ];
+                        break;
+                    }
+                    case 'DELTA': {
+                        // TODO
+                        break;
+                    }
+                    default:
                 }
 
                 chartDataStreams.push(chartDataStream);

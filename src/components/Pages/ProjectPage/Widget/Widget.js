@@ -21,6 +21,7 @@ import EmptyView from './Views/EmptyView/EmptyView';
 import MapView from './Views/MapView/MapView';
 import ImageView from './Views/ImageView/ImageView';
 import TextInputView from './Views/TextInputView/TextInputView';
+import SegmentedControlView from './Views/SegmentedControlView/SegmentedControlView';
 
 const WIDGET_VIEW_COMPONENTS = {
     BUTTON: ButtonView,
@@ -50,6 +51,7 @@ const WIDGET_VIEW_COMPONENTS = {
     IMAGE: ImageView,
     TEXT_INPUT: TextInputView,
     NUMBER_INPUT: TextInputView,
+    SEGMENTED_CONTROL: SegmentedControlView,
 };
 
 export class Widget extends React.Component {

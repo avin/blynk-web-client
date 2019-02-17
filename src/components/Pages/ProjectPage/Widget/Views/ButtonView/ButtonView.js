@@ -19,9 +19,9 @@ export class ButtonView extends React.Component {
         const { widget } = this.props;
 
         if (this.isButtonActive()) {
-            return widget.get('onLabel', 'ON');
+            return widget.get('onLabel') || widget.getIn(['onButtonState', 'text']) || 'ON';
         }
-        return widget.get('offLabel', 'OFF');
+        return widget.get('offLabel') || widget.getIn(['offButtonState', 'text']) || 'OFF';
     }
 
     handleMouseDown = () => {

@@ -20,6 +20,7 @@ import TabsView from './Views/TabsView/TabsView';
 import EmptyView from './Views/EmptyView/EmptyView';
 import MapView from './Views/MapView/MapView';
 import ImageView from './Views/ImageView/ImageView';
+import TextInputView from './Views/TextInputView/TextInputView';
 
 const WIDGET_VIEW_COMPONENTS = {
     BUTTON: ButtonView,
@@ -47,6 +48,8 @@ const WIDGET_VIEW_COMPONENTS = {
     RTC: EmptyView,
     MAP: MapView,
     IMAGE: ImageView,
+    TEXT_INPUT: TextInputView,
+    NUMBER_INPUT: TextInputView,
 };
 
 export class Widget extends React.Component {

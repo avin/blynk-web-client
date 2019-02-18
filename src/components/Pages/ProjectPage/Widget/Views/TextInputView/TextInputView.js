@@ -31,7 +31,10 @@ export class TextInputView extends React.Component {
 
     handleBlur = () => {
         const { widget } = this.props;
-        const inputValue = Number(this.state.inputValue) || widget.get('min', 0);
+        let { inputValue } = this.state;
+        if (this.isNumberInput) {
+            inputValue = Number(inputValue) || widget.get('min', 0);
+        }
 
         const pin = getWidgetPinAddress(widget);
         if (pin !== -1) {

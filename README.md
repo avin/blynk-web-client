@@ -1,10 +1,6 @@
-#
-
-### :warning:
-
-### WORK IN PROGRESS
-
-**This is in early alpha stages, don't expect it to work reliably across versions yet. I'm looking for beta testers, so please post an issue if you find any problems or want to help out with this project in some way.**
+:warning::warning::warning:
+Sorry guys but I do not have a plan to contribute this project any more. Public API of Blynk is very limited, and many features are not able to be released. If you searching of something more complex for your automatizations, check these projects: [Node-RED](https://github.com/node-red/node-red) and [Home Assistent](https://github.com/home-assistant/core)
+:warning::warning::warning:
 
 ---
 
